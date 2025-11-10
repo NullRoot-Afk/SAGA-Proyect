@@ -334,12 +334,6 @@ namespace SAGA_EV3
             Tsm_agregar_existente.Checked = false;
             Tsm_nuevo_prod.Checked = false;
         }
-
-        private void Tsm_agregar_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void Tsm_gestion_usuarios_Click(object sender, EventArgs e)
         {
              
@@ -349,12 +343,6 @@ namespace SAGA_EV3
             PNL_eliminacion_cantidad.Visible = false;
             PNL_eliminacion_producto.Visible = false;
         }
-
-        private void Lbl_usuario_logeado_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void Btn_cerrarSesion_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -364,9 +352,14 @@ namespace SAGA_EV3
 
         private void Btn_filtrar_Click(object sender, EventArgs e)
         {
+            //se toma el valor seleccionado y se establece como el filtro
             string filtro = Cbx_filtro_tipo_usuario.SelectedValue.ToString();
+            //se accede a la propiedad del DataTable llamada defaultView, esto devuelve una vista que permite agregar filtros
             DataView dv = dt_usuarios.DefaultView;
+            //se aplica un filtro al DataView, busca los valores de una columna [Tipo de usuario] que coincidan con el filtro
+            //% o comodin representa cualquier secuencia de caracteres y su orden es importante 
             dv.RowFilter = $"[Tipo de usuario] LIKE '%{filtro}%'";
+            //Trasforma la Dataview en una tabla y la asigna al DataGridView
             Dgv_gestionUsuarios.DataSource = dv.ToTable();
 
         }
