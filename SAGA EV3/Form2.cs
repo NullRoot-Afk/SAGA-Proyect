@@ -151,6 +151,9 @@ namespace SAGA_EV3
             Cbx_filtro_tipo_usuario.DataSource = dt_usuarios.DefaultView.ToTable(true, "Tipo de usuario");
             Cbx_filtro_tipo_usuario.DisplayMember = "Tipo de usuario";
             Cbx_filtro_tipo_usuario.ValueMember = "Tipo de usuario";
+            Cbx_modificar_tipo_usuario.DataSource = dt_usuarios.DefaultView.ToTable(true, "Tipo de usuario");
+            Cbx_modificar_tipo_usuario.DisplayMember = "Tipo de usuario";
+            Cbx_modificar_tipo_usuario.ValueMember = "Tipo de usuario";
 
 
 
@@ -364,10 +367,74 @@ namespace SAGA_EV3
 
         private void Btn_filtrar_Click(object sender, EventArgs e)
         {
-            string filtro = Cbx_filtro_tipo_usuario.SelectedValue.ToString();
+            string filtro_tipo = Cbx_filtro_tipo_usuario.SelectedValue.ToString();
+            string filtro_nombre= Txb_filtro_nombre_usuario.Text.Trim();
             DataView dv = dt_usuarios.DefaultView;
-            dv.RowFilter = $"[Tipo de usuario] LIKE '%{filtro}%'";
-            Dgv_gestionUsuarios.DataSource = dv.ToTable();
+            try
+            {
+                dv.RowFilter = $"[Tipo de usuario] LIKE '%{filtro_tipo}%' AND [Nombre de Usuario] LIKE '%{filtro_nombre}%'";
+                Dgv_gestionUsuarios.DataSource = dv.ToTable();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al aplicar filtro: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            
+
+        }
+        string usuario_seleccionado;
+        private void Btn_editar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Pnl_edicion.Visible = true;
+                if (Dgv_gestionUsuarios.SelectedRows.Count == 1)
+                {
+                    usuario_seleccionado = Dgv_gestionUsuarios.SelectedRows[0].Cells["Nombre de Usuario"].Value.ToString();
+                    Txb_modificar_nombre_usuario.Text = usuario_seleccionado;
+                    
+                }
+                else
+                {
+                    MessageBox.Show("Por favor seleccione un solo usuario para editar", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al cargar datos del usuario: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }   
+        }
+        
+        private void Btn_guardar_cambios_Click(object sender, EventArgs e)
+        {
+            try
+            {
+               if (Txb_modificar_nombre_usuario.Text.Trim() != "" && Cbx_modificar_tipo_usuario.SelectedIndex != 0)
+               {
+                    var user = usuarios.FirstOrDefault(x => x.GetNombre() == usuario_seleccionado);
+                    user._Nombre = Txb_modificar_nombre_usuario.Text.Trim();
+                    user._Rol = Cbx_modificar_tipo_usuario.SelectedValue.ToString();
+                }
+               
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al guardar cambios: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            Cargardatos();
+        }
+
+        private void Dgv_gestionUsuarios_SelectionChanged(object sender, EventArgs e)
+        {
+            Btn_editar.Enabled = Dgv_gestionUsuarios.SelectedRows.Count == 1;
+        }
+
+        private void Cbx_filtro_tipo_usuario_SelectedIndexChanged(object sender, EventArgs e)
+        {
 
         }
     }
