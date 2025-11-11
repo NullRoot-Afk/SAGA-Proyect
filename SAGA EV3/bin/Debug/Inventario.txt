@@ -1,1 +1,1 @@
-maiz 30kg;12;Medicamentos
+po;24;Alimentos

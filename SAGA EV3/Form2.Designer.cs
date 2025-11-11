@@ -42,12 +42,11 @@
             this.Pnl_agregar_nuevo = new System.Windows.Forms.Panel();
             this.Txb_producto_nuevo = new System.Windows.Forms.TextBox();
             this.Btn_Agregar_prod_nuevo = new System.Windows.Forms.Button();
-            this.Cbx_tipo = new System.Windows.Forms.ComboBox();
+            this.Cbx_tipo_insumo = new System.Windows.Forms.ComboBox();
             this.Lbl_tipo = new System.Windows.Forms.Label();
-            this.Txb_cantidad = new System.Windows.Forms.TextBox();
+            this.Txb_cantidad_prod_nuevo = new System.Windows.Forms.TextBox();
             this.Lbl_Cantidad = new System.Windows.Forms.Label();
             this.Producto = new System.Windows.Forms.Label();
-            this.DGV_inventario = new System.Windows.Forms.DataGridView();
             this.Pnl_agregar_existente = new System.Windows.Forms.Panel();
             this.BTN_agregar_existencias = new System.Windows.Forms.Button();
             this.CBX_existencia = new System.Windows.Forms.ComboBox();
@@ -68,15 +67,12 @@
             this.PNL_eliminacion_cantidad = new System.Windows.Forms.Panel();
             this.TXB_Eliminacion_cantidad = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.panel3 = new System.Windows.Forms.Panel();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CBX_eliminacion = new System.Windows.Forms.ComboBox();
             this.BTN_eliminar_cantidad = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.Pnl_gestionUsuarios = new System.Windows.Forms.Panel();
+            this.Lbl_usuario_logeado = new System.Windows.Forms.Label();
+            this.Btn_cerrarSesion = new System.Windows.Forms.Button();
             this.Pnl_edicion = new System.Windows.Forms.Panel();
             this.label12 = new System.Windows.Forms.Label();
             this.Btn_guardar_cambios = new System.Windows.Forms.Button();
@@ -93,21 +89,24 @@
             this.Cbx_filtro_tipo_usuario = new System.Windows.Forms.ComboBox();
             this.Btn_filtrar = new System.Windows.Forms.Button();
             this.Dgv_gestionUsuarios = new System.Windows.Forms.DataGridView();
-            this.Lbl_usuario_logeado = new System.Windows.Forms.Label();
-            this.Btn_cerrarSesion = new System.Windows.Forms.Button();
+            this.DGV_inventario = new System.Windows.Forms.DataGridView();
+            this.Dgv_inventario_copia1 = new System.Windows.Forms.DataGridView();
+            this.Dgv_inventario_copia2 = new System.Windows.Forms.DataGridView();
+            this.Dgv_inventario_copia3 = new System.Windows.Forms.DataGridView();
             this.menuStrip1.SuspendLayout();
             this.Pnl_agregar_nuevo.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.DGV_inventario)).BeginInit();
             this.Pnl_agregar_existente.SuspendLayout();
             this.PNL_eliminacion_producto.SuspendLayout();
             this.Pnl_adm_users.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView4)).BeginInit();
             this.PNL_eliminacion_cantidad.SuspendLayout();
-            this.panel3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.Pnl_gestionUsuarios.SuspendLayout();
             this.Pnl_edicion.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Dgv_gestionUsuarios)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DGV_inventario)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Dgv_inventario_copia1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Dgv_inventario_copia2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Dgv_inventario_copia3)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -200,16 +199,17 @@
             // 
             // Pnl_agregar_nuevo
             // 
+            this.Pnl_agregar_nuevo.Controls.Add(this.DGV_inventario);
             this.Pnl_agregar_nuevo.Controls.Add(this.Txb_producto_nuevo);
             this.Pnl_agregar_nuevo.Controls.Add(this.Btn_Agregar_prod_nuevo);
-            this.Pnl_agregar_nuevo.Controls.Add(this.Cbx_tipo);
+            this.Pnl_agregar_nuevo.Controls.Add(this.Cbx_tipo_insumo);
             this.Pnl_agregar_nuevo.Controls.Add(this.Lbl_tipo);
-            this.Pnl_agregar_nuevo.Controls.Add(this.Txb_cantidad);
+            this.Pnl_agregar_nuevo.Controls.Add(this.Txb_cantidad_prod_nuevo);
             this.Pnl_agregar_nuevo.Controls.Add(this.Lbl_Cantidad);
             this.Pnl_agregar_nuevo.Controls.Add(this.Producto);
             this.Pnl_agregar_nuevo.Location = new System.Drawing.Point(12, 27);
             this.Pnl_agregar_nuevo.Name = "Pnl_agregar_nuevo";
-            this.Pnl_agregar_nuevo.Size = new System.Drawing.Size(345, 422);
+            this.Pnl_agregar_nuevo.Size = new System.Drawing.Size(773, 422);
             this.Pnl_agregar_nuevo.TabIndex = 12;
             // 
             // Txb_producto_nuevo
@@ -229,18 +229,18 @@
             this.Btn_Agregar_prod_nuevo.UseVisualStyleBackColor = true;
             this.Btn_Agregar_prod_nuevo.Click += new System.EventHandler(this.Btn_Agregar_prod_nuevo_Click);
             // 
-            // Cbx_tipo
+            // Cbx_tipo_insumo
             // 
-            this.Cbx_tipo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.Cbx_tipo.FormattingEnabled = true;
-            this.Cbx_tipo.Items.AddRange(new object[] {
+            this.Cbx_tipo_insumo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.Cbx_tipo_insumo.FormattingEnabled = true;
+            this.Cbx_tipo_insumo.Items.AddRange(new object[] {
             "Medicamentos",
             "Alimentos",
             "Otros"});
-            this.Cbx_tipo.Location = new System.Drawing.Point(176, 188);
-            this.Cbx_tipo.Name = "Cbx_tipo";
-            this.Cbx_tipo.Size = new System.Drawing.Size(121, 21);
-            this.Cbx_tipo.TabIndex = 17;
+            this.Cbx_tipo_insumo.Location = new System.Drawing.Point(176, 188);
+            this.Cbx_tipo_insumo.Name = "Cbx_tipo_insumo";
+            this.Cbx_tipo_insumo.Size = new System.Drawing.Size(121, 21);
+            this.Cbx_tipo_insumo.TabIndex = 17;
             // 
             // Lbl_tipo
             // 
@@ -252,12 +252,12 @@
             this.Lbl_tipo.TabIndex = 16;
             this.Lbl_tipo.Text = "Tipo";
             // 
-            // Txb_cantidad
+            // Txb_cantidad_prod_nuevo
             // 
-            this.Txb_cantidad.Location = new System.Drawing.Point(176, 144);
-            this.Txb_cantidad.Name = "Txb_cantidad";
-            this.Txb_cantidad.Size = new System.Drawing.Size(39, 20);
-            this.Txb_cantidad.TabIndex = 15;
+            this.Txb_cantidad_prod_nuevo.Location = new System.Drawing.Point(176, 144);
+            this.Txb_cantidad_prod_nuevo.Name = "Txb_cantidad_prod_nuevo";
+            this.Txb_cantidad_prod_nuevo.Size = new System.Drawing.Size(39, 20);
+            this.Txb_cantidad_prod_nuevo.TabIndex = 15;
             // 
             // Lbl_Cantidad
             // 
@@ -280,21 +280,9 @@
             this.Producto.TabIndex = 13;
             this.Producto.Text = "Producto";
             // 
-            // DGV_inventario
-            // 
-            this.DGV_inventario.AllowUserToAddRows = false;
-            this.DGV_inventario.AllowUserToDeleteRows = false;
-            this.DGV_inventario.AllowUserToOrderColumns = true;
-            this.DGV_inventario.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DGV_inventario.Enabled = false;
-            this.DGV_inventario.Location = new System.Drawing.Point(432, 60);
-            this.DGV_inventario.Name = "DGV_inventario";
-            this.DGV_inventario.ReadOnly = true;
-            this.DGV_inventario.Size = new System.Drawing.Size(344, 335);
-            this.DGV_inventario.TabIndex = 24;
-            // 
             // Pnl_agregar_existente
             // 
+            this.Pnl_agregar_existente.Controls.Add(this.Dgv_inventario_copia1);
             this.Pnl_agregar_existente.Controls.Add(this.BTN_agregar_existencias);
             this.Pnl_agregar_existente.Controls.Add(this.CBX_existencia);
             this.Pnl_agregar_existente.Controls.Add(this.TXB_agregar_cantidad_existencia);
@@ -302,7 +290,7 @@
             this.Pnl_agregar_existente.Controls.Add(this.label4);
             this.Pnl_agregar_existente.Location = new System.Drawing.Point(12, 27);
             this.Pnl_agregar_existente.Name = "Pnl_agregar_existente";
-            this.Pnl_agregar_existente.Size = new System.Drawing.Size(345, 422);
+            this.Pnl_agregar_existente.Size = new System.Drawing.Size(776, 422);
             this.Pnl_agregar_existente.TabIndex = 20;
             // 
             // BTN_agregar_existencias
@@ -313,6 +301,7 @@
             this.BTN_agregar_existencias.TabIndex = 20;
             this.BTN_agregar_existencias.Text = "Agregar";
             this.BTN_agregar_existencias.UseVisualStyleBackColor = true;
+            this.BTN_agregar_existencias.Click += new System.EventHandler(this.BTN_agregar_existencias_Click_1);
             // 
             // CBX_existencia
             // 
@@ -353,6 +342,7 @@
             // 
             // PNL_eliminacion_producto
             // 
+            this.PNL_eliminacion_producto.Controls.Add(this.Dgv_inventario_copia2);
             this.PNL_eliminacion_producto.Controls.Add(this.Pnl_adm_users);
             this.PNL_eliminacion_producto.Controls.Add(this.CBX_producto_eliminacion);
             this.PNL_eliminacion_producto.Controls.Add(this.textBox5);
@@ -361,7 +351,7 @@
             this.PNL_eliminacion_producto.Controls.Add(this.label7);
             this.PNL_eliminacion_producto.Location = new System.Drawing.Point(12, 27);
             this.PNL_eliminacion_producto.Name = "PNL_eliminacion_producto";
-            this.PNL_eliminacion_producto.Size = new System.Drawing.Size(345, 422);
+            this.PNL_eliminacion_producto.Size = new System.Drawing.Size(776, 422);
             this.PNL_eliminacion_producto.TabIndex = 25;
             // 
             // Pnl_adm_users
@@ -450,16 +440,17 @@
             // 
             // PNL_eliminacion_cantidad
             // 
+            this.PNL_eliminacion_cantidad.Controls.Add(this.Dgv_inventario_copia3);
             this.PNL_eliminacion_cantidad.Controls.Add(this.TXB_Eliminacion_cantidad);
             this.PNL_eliminacion_cantidad.Controls.Add(this.label1);
-            this.PNL_eliminacion_cantidad.Controls.Add(this.panel3);
             this.PNL_eliminacion_cantidad.Controls.Add(this.CBX_eliminacion);
             this.PNL_eliminacion_cantidad.Controls.Add(this.BTN_eliminar_cantidad);
             this.PNL_eliminacion_cantidad.Controls.Add(this.label2);
             this.PNL_eliminacion_cantidad.Location = new System.Drawing.Point(12, 27);
             this.PNL_eliminacion_cantidad.Name = "PNL_eliminacion_cantidad";
-            this.PNL_eliminacion_cantidad.Size = new System.Drawing.Size(345, 422);
+            this.PNL_eliminacion_cantidad.Size = new System.Drawing.Size(776, 422);
             this.PNL_eliminacion_cantidad.TabIndex = 31;
+            this.PNL_eliminacion_cantidad.Paint += new System.Windows.Forms.PaintEventHandler(this.PNL_eliminacion_cantidad_Paint);
             // 
             // TXB_Eliminacion_cantidad
             // 
@@ -478,41 +469,6 @@
             this.label1.Size = new System.Drawing.Size(72, 18);
             this.label1.TabIndex = 31;
             this.label1.Text = "Cantidad";
-            // 
-            // panel3
-            // 
-            this.panel3.Controls.Add(this.dataGridView1);
-            this.panel3.Location = new System.Drawing.Point(761, 385);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(39, 37);
-            this.panel3.TabIndex = 30;
-            // 
-            // dataGridView1
-            // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dataGridViewTextBoxColumn1,
-            this.dataGridViewTextBoxColumn2,
-            this.dataGridViewTextBoxColumn3});
-            this.dataGridView1.Location = new System.Drawing.Point(456, 0);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(343, 421);
-            this.dataGridView1.TabIndex = 0;
-            // 
-            // dataGridViewTextBoxColumn1
-            // 
-            this.dataGridViewTextBoxColumn1.HeaderText = "Nombre";
-            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
-            // 
-            // dataGridViewTextBoxColumn2
-            // 
-            this.dataGridViewTextBoxColumn2.HeaderText = "Tipo usuario";
-            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
-            // 
-            // dataGridViewTextBoxColumn3
-            // 
-            this.dataGridViewTextBoxColumn3.HeaderText = "Fecha de Ingreso";
-            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
             // 
             // CBX_eliminacion
             // 
@@ -546,7 +502,6 @@
             // 
             // Pnl_gestionUsuarios
             // 
-            this.Pnl_gestionUsuarios.Controls.Add(this.Pnl_edicion);
             this.Pnl_gestionUsuarios.Controls.Add(this.Btn_editar);
             this.Pnl_gestionUsuarios.Controls.Add(this.label8);
             this.Pnl_gestionUsuarios.Controls.Add(this.label6);
@@ -554,10 +509,30 @@
             this.Pnl_gestionUsuarios.Controls.Add(this.Cbx_filtro_tipo_usuario);
             this.Pnl_gestionUsuarios.Controls.Add(this.Btn_filtrar);
             this.Pnl_gestionUsuarios.Controls.Add(this.Dgv_gestionUsuarios);
+            this.Pnl_gestionUsuarios.Controls.Add(this.Pnl_edicion);
             this.Pnl_gestionUsuarios.Location = new System.Drawing.Point(12, 27);
             this.Pnl_gestionUsuarios.Name = "Pnl_gestionUsuarios";
-            this.Pnl_gestionUsuarios.Size = new System.Drawing.Size(776, 422);
+            this.Pnl_gestionUsuarios.Size = new System.Drawing.Size(773, 422);
             this.Pnl_gestionUsuarios.TabIndex = 32;
+            // 
+            // Lbl_usuario_logeado
+            // 
+            this.Lbl_usuario_logeado.AutoSize = true;
+            this.Lbl_usuario_logeado.Location = new System.Drawing.Point(485, 9);
+            this.Lbl_usuario_logeado.Name = "Lbl_usuario_logeado";
+            this.Lbl_usuario_logeado.Size = new System.Drawing.Size(44, 13);
+            this.Lbl_usuario_logeado.TabIndex = 34;
+            this.Lbl_usuario_logeado.Text = "Nombre";
+            // 
+            // Btn_cerrarSesion
+            // 
+            this.Btn_cerrarSesion.Location = new System.Drawing.Point(695, 3);
+            this.Btn_cerrarSesion.Name = "Btn_cerrarSesion";
+            this.Btn_cerrarSesion.Size = new System.Drawing.Size(90, 24);
+            this.Btn_cerrarSesion.TabIndex = 35;
+            this.Btn_cerrarSesion.Text = "Cerrar Sesion";
+            this.Btn_cerrarSesion.UseVisualStyleBackColor = true;
+            this.Btn_cerrarSesion.Click += new System.EventHandler(this.Btn_cerrarSesion_Click);
             // 
             // Pnl_edicion
             // 
@@ -569,10 +544,10 @@
             this.Pnl_edicion.Controls.Add(this.Txb_modificar_nombre_usuario);
             this.Pnl_edicion.Controls.Add(this.label10);
             this.Pnl_edicion.Controls.Add(this.label9);
-            this.Pnl_edicion.Location = new System.Drawing.Point(491, 65);
+            this.Pnl_edicion.Location = new System.Drawing.Point(483, 98);
             this.Pnl_edicion.Name = "Pnl_edicion";
             this.Pnl_edicion.Size = new System.Drawing.Size(281, 302);
-            this.Pnl_edicion.TabIndex = 16;
+            this.Pnl_edicion.TabIndex = 36;
             this.Pnl_edicion.Visible = false;
             // 
             // label12
@@ -650,37 +625,37 @@
             // 
             // Btn_editar
             // 
-            this.Btn_editar.Location = new System.Drawing.Point(420, 76);
+            this.Btn_editar.Location = new System.Drawing.Point(363, 64);
             this.Btn_editar.Name = "Btn_editar";
-            this.Btn_editar.Size = new System.Drawing.Size(54, 20);
-            this.Btn_editar.TabIndex = 15;
+            this.Btn_editar.Size = new System.Drawing.Size(63, 25);
+            this.Btn_editar.TabIndex = 43;
             this.Btn_editar.Text = "Editar";
             this.Btn_editar.UseVisualStyleBackColor = true;
             // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(37, 17);
+            this.label8.Location = new System.Drawing.Point(49, 5);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(98, 13);
-            this.label8.TabIndex = 6;
+            this.label8.TabIndex = 42;
             this.label8.Text = "Nombre de Usuario";
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(183, 17);
+            this.label6.Location = new System.Drawing.Point(195, 5);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(82, 13);
-            this.label6.TabIndex = 5;
+            this.label6.TabIndex = 41;
             this.label6.Text = "Tipo de Usuario";
             // 
             // Txb_filtro_nombre_usuario
             // 
-            this.Txb_filtro_nombre_usuario.Location = new System.Drawing.Point(18, 34);
+            this.Txb_filtro_nombre_usuario.Location = new System.Drawing.Point(30, 22);
             this.Txb_filtro_nombre_usuario.Name = "Txb_filtro_nombre_usuario";
             this.Txb_filtro_nombre_usuario.Size = new System.Drawing.Size(130, 20);
-            this.Txb_filtro_nombre_usuario.TabIndex = 4;
+            this.Txb_filtro_nombre_usuario.TabIndex = 40;
             // 
             // Cbx_filtro_tipo_usuario
             // 
@@ -689,21 +664,19 @@
             this.Cbx_filtro_tipo_usuario.Items.AddRange(new object[] {
             "Administrador",
             "Empleado"});
-            this.Cbx_filtro_tipo_usuario.Location = new System.Drawing.Point(172, 33);
+            this.Cbx_filtro_tipo_usuario.Location = new System.Drawing.Point(184, 21);
             this.Cbx_filtro_tipo_usuario.Name = "Cbx_filtro_tipo_usuario";
             this.Cbx_filtro_tipo_usuario.Size = new System.Drawing.Size(103, 21);
-            this.Cbx_filtro_tipo_usuario.TabIndex = 3;
-            this.Cbx_filtro_tipo_usuario.SelectedIndexChanged += new System.EventHandler(this.Cbx_filtro_tipo_usuario_SelectedIndexChanged);
+            this.Cbx_filtro_tipo_usuario.TabIndex = 39;
             // 
             // Btn_filtrar
             // 
-            this.Btn_filtrar.Location = new System.Drawing.Point(303, 31);
+            this.Btn_filtrar.Location = new System.Drawing.Point(315, 19);
             this.Btn_filtrar.Name = "Btn_filtrar";
             this.Btn_filtrar.Size = new System.Drawing.Size(75, 23);
-            this.Btn_filtrar.TabIndex = 1;
+            this.Btn_filtrar.TabIndex = 38;
             this.Btn_filtrar.Text = "Filtrar";
             this.Btn_filtrar.UseVisualStyleBackColor = true;
-            this.Btn_filtrar.Click += new System.EventHandler(this.Btn_filtrar_Click);
             // 
             // Dgv_gestionUsuarios
             // 
@@ -711,31 +684,64 @@
             this.Dgv_gestionUsuarios.AllowUserToDeleteRows = false;
             this.Dgv_gestionUsuarios.AllowUserToOrderColumns = true;
             this.Dgv_gestionUsuarios.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.Dgv_gestionUsuarios.Location = new System.Drawing.Point(0, 76);
+            this.Dgv_gestionUsuarios.Location = new System.Drawing.Point(12, 64);
             this.Dgv_gestionUsuarios.Name = "Dgv_gestionUsuarios";
+            this.Dgv_gestionUsuarios.ReadOnly = true;
             this.Dgv_gestionUsuarios.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.Dgv_gestionUsuarios.Size = new System.Drawing.Size(414, 346);
-            this.Dgv_gestionUsuarios.TabIndex = 0;
-            this.Dgv_gestionUsuarios.SelectionChanged += new System.EventHandler(this.Dgv_gestionUsuarios_SelectionChanged);
+            this.Dgv_gestionUsuarios.Size = new System.Drawing.Size(333, 336);
+            this.Dgv_gestionUsuarios.TabIndex = 37;
             // 
-            // Lbl_usuario_logeado
+            // DGV_inventario
             // 
-            this.Lbl_usuario_logeado.AutoSize = true;
-            this.Lbl_usuario_logeado.Location = new System.Drawing.Point(485, 9);
-            this.Lbl_usuario_logeado.Name = "Lbl_usuario_logeado";
-            this.Lbl_usuario_logeado.Size = new System.Drawing.Size(44, 13);
-            this.Lbl_usuario_logeado.TabIndex = 34;
-            this.Lbl_usuario_logeado.Text = "Nombre";
+            this.DGV_inventario.AllowUserToAddRows = false;
+            this.DGV_inventario.AllowUserToDeleteRows = false;
+            this.DGV_inventario.AllowUserToOrderColumns = true;
+            this.DGV_inventario.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DGV_inventario.Enabled = false;
+            this.DGV_inventario.Location = new System.Drawing.Point(402, 44);
+            this.DGV_inventario.Name = "DGV_inventario";
+            this.DGV_inventario.ReadOnly = true;
+            this.DGV_inventario.Size = new System.Drawing.Size(344, 335);
+            this.DGV_inventario.TabIndex = 25;
             // 
-            // Btn_cerrarSesion
+            // Dgv_inventario_copia1
             // 
-            this.Btn_cerrarSesion.Location = new System.Drawing.Point(695, 3);
-            this.Btn_cerrarSesion.Name = "Btn_cerrarSesion";
-            this.Btn_cerrarSesion.Size = new System.Drawing.Size(90, 24);
-            this.Btn_cerrarSesion.TabIndex = 35;
-            this.Btn_cerrarSesion.Text = "Cerrar Sesion";
-            this.Btn_cerrarSesion.UseVisualStyleBackColor = true;
-            this.Btn_cerrarSesion.Click += new System.EventHandler(this.Btn_cerrarSesion_Click);
+            this.Dgv_inventario_copia1.AllowUserToAddRows = false;
+            this.Dgv_inventario_copia1.AllowUserToDeleteRows = false;
+            this.Dgv_inventario_copia1.AllowUserToOrderColumns = true;
+            this.Dgv_inventario_copia1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.Dgv_inventario_copia1.Enabled = false;
+            this.Dgv_inventario_copia1.Location = new System.Drawing.Point(402, 44);
+            this.Dgv_inventario_copia1.Name = "Dgv_inventario_copia1";
+            this.Dgv_inventario_copia1.ReadOnly = true;
+            this.Dgv_inventario_copia1.Size = new System.Drawing.Size(344, 335);
+            this.Dgv_inventario_copia1.TabIndex = 25;
+            // 
+            // Dgv_inventario_copia2
+            // 
+            this.Dgv_inventario_copia2.AllowUserToAddRows = false;
+            this.Dgv_inventario_copia2.AllowUserToDeleteRows = false;
+            this.Dgv_inventario_copia2.AllowUserToOrderColumns = true;
+            this.Dgv_inventario_copia2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.Dgv_inventario_copia2.Enabled = false;
+            this.Dgv_inventario_copia2.Location = new System.Drawing.Point(402, 44);
+            this.Dgv_inventario_copia2.Name = "Dgv_inventario_copia2";
+            this.Dgv_inventario_copia2.ReadOnly = true;
+            this.Dgv_inventario_copia2.Size = new System.Drawing.Size(344, 335);
+            this.Dgv_inventario_copia2.TabIndex = 31;
+            // 
+            // Dgv_inventario_copia3
+            // 
+            this.Dgv_inventario_copia3.AllowUserToAddRows = false;
+            this.Dgv_inventario_copia3.AllowUserToDeleteRows = false;
+            this.Dgv_inventario_copia3.AllowUserToOrderColumns = true;
+            this.Dgv_inventario_copia3.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.Dgv_inventario_copia3.Enabled = false;
+            this.Dgv_inventario_copia3.Location = new System.Drawing.Point(402, 44);
+            this.Dgv_inventario_copia3.Name = "Dgv_inventario_copia3";
+            this.Dgv_inventario_copia3.ReadOnly = true;
+            this.Dgv_inventario_copia3.Size = new System.Drawing.Size(344, 335);
+            this.Dgv_inventario_copia3.TabIndex = 33;
             // 
             // Form2
             // 
@@ -744,13 +750,12 @@
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.Btn_cerrarSesion);
             this.Controls.Add(this.Lbl_usuario_logeado);
-            this.Controls.Add(this.Pnl_gestionUsuarios);
-            this.Controls.Add(this.Pnl_agregar_nuevo);
-            this.Controls.Add(this.DGV_inventario);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.Pnl_agregar_existente);
             this.Controls.Add(this.PNL_eliminacion_producto);
             this.Controls.Add(this.PNL_eliminacion_cantidad);
+            this.Controls.Add(this.Pnl_gestionUsuarios);
+            this.Controls.Add(this.Pnl_agregar_nuevo);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form2";
             this.Text = "Form2";
@@ -758,7 +763,6 @@
             this.menuStrip1.PerformLayout();
             this.Pnl_agregar_nuevo.ResumeLayout(false);
             this.Pnl_agregar_nuevo.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.DGV_inventario)).EndInit();
             this.Pnl_agregar_existente.ResumeLayout(false);
             this.Pnl_agregar_existente.PerformLayout();
             this.PNL_eliminacion_producto.ResumeLayout(false);
@@ -767,13 +771,15 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView4)).EndInit();
             this.PNL_eliminacion_cantidad.ResumeLayout(false);
             this.PNL_eliminacion_cantidad.PerformLayout();
-            this.panel3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.Pnl_gestionUsuarios.ResumeLayout(false);
             this.Pnl_gestionUsuarios.PerformLayout();
             this.Pnl_edicion.ResumeLayout(false);
             this.Pnl_edicion.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Dgv_gestionUsuarios)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DGV_inventario)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Dgv_inventario_copia1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Dgv_inventario_copia2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Dgv_inventario_copia3)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -789,9 +795,9 @@
         private System.Windows.Forms.ToolStripMenuItem gestionDeEmpleadosToolStripMenuItem;
         private System.Windows.Forms.Panel Pnl_agregar_nuevo;
         private System.Windows.Forms.Button Btn_Agregar_prod_nuevo;
-        private System.Windows.Forms.ComboBox Cbx_tipo;
+        private System.Windows.Forms.ComboBox Cbx_tipo_insumo;
         private System.Windows.Forms.Label Lbl_tipo;
-        private System.Windows.Forms.TextBox Txb_cantidad;
+        private System.Windows.Forms.TextBox Txb_cantidad_prod_nuevo;
         private System.Windows.Forms.Label Lbl_Cantidad;
         private System.Windows.Forms.Label Producto;
         private System.Windows.Forms.ToolStripMenuItem Tsm_nuevo_prod;
@@ -802,7 +808,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox Txb_producto_nuevo;
-        private System.Windows.Forms.DataGridView DGV_inventario;
         private System.Windows.Forms.ComboBox CBX_producto_eliminacion;
         private System.Windows.Forms.TextBox textBox5;
         private System.Windows.Forms.Label label5;
@@ -817,11 +822,6 @@
         private System.Windows.Forms.ToolStripMenuItem TSM_eliminar_producto;
         private System.Windows.Forms.ToolStripMenuItem TSM_eliminar_existencias;
         private System.Windows.Forms.Panel PNL_eliminacion_cantidad;
-        private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
         private System.Windows.Forms.ComboBox CBX_eliminacion;
         private System.Windows.Forms.Button BTN_eliminar_cantidad;
         private System.Windows.Forms.Label label2;
@@ -829,24 +829,28 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button BTN_agregar_existencias;
         private System.Windows.Forms.Panel Pnl_gestionUsuarios;
-        private System.Windows.Forms.Button Btn_filtrar;
-        private System.Windows.Forms.DataGridView Dgv_gestionUsuarios;
-        private System.Windows.Forms.ComboBox Cbx_filtro_tipo_usuario;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox Txb_filtro_nombre_usuario;
         private System.Windows.Forms.Label Lbl_usuario_logeado;
         private System.Windows.Forms.Button Btn_cerrarSesion;
         private System.Windows.Forms.ToolStripMenuItem Tsm_agregar_usuario;
+        private System.Windows.Forms.Panel Pnl_edicion;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Button Btn_guardar_cambios;
         private System.Windows.Forms.ComboBox Cbx_modificar_tipo_usuario;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.TextBox Txb_modificar_nombre_usuario;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.Button Btn_guardar_cambios;
+        private System.Windows.Forms.DataGridView DGV_inventario;
+        private System.Windows.Forms.DataGridView Dgv_inventario_copia1;
         private System.Windows.Forms.Button Btn_editar;
-        private System.Windows.Forms.Panel Pnl_edicion;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox Txb_filtro_nombre_usuario;
+        private System.Windows.Forms.ComboBox Cbx_filtro_tipo_usuario;
+        private System.Windows.Forms.Button Btn_filtrar;
+        private System.Windows.Forms.DataGridView Dgv_gestionUsuarios;
+        private System.Windows.Forms.DataGridView Dgv_inventario_copia2;
+        private System.Windows.Forms.DataGridView Dgv_inventario_copia3;
     }
 }

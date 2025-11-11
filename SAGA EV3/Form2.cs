@@ -18,7 +18,7 @@ namespace SAGA_EV3
         DataTable dt = new DataTable();
         DataTable dt_usuarios = new DataTable();
         List<Usuario> usuarios = new List<Usuario>();
-        string  usuario;
+        string usuario;
         string rol;
         public Form2(string usuario, string rol)
         {
@@ -37,7 +37,7 @@ namespace SAGA_EV3
             Pnl_agregar_existente.Visible = false;
             PNL_eliminacion_producto.Visible = false;
             PNL_eliminacion_cantidad.Visible = false;
-            Pnl_gestionUsuarios .Visible = false;
+            Pnl_gestionUsuarios.Visible = false;
             //Adjusting checks
             Tsm_agregar_existente.Checked = false;
             Tsm_agregar.Checked = true;
@@ -80,7 +80,7 @@ namespace SAGA_EV3
                     }
                 }
             }
-            catch (Exception) 
+            catch (Exception)
             {
                 MessageBox.Show("El inventario ha quedado vacio", "Emergencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
@@ -115,6 +115,9 @@ namespace SAGA_EV3
             //fin de seccion redundante
             // Assigning DataTable to DataGridView and ComboBox
             DGV_inventario.DataSource = dt;
+            Dgv_inventario_copia1.DataSource = dt;
+            Dgv_inventario_copia2.DataSource = dt;
+            Dgv_inventario_copia3.DataSource = dt;
             CBX_producto_eliminacion.DataSource = dt;
             CBX_producto_eliminacion.DisplayMember = "Nombre";
             CBX_producto_eliminacion.ValueMember = "Nombre";
@@ -136,12 +139,12 @@ namespace SAGA_EV3
         }
         private void Btn_Agregar_prod_nuevo_Click(object sender, EventArgs e)
         {
-            if (Txb_producto_nuevo.Text == "" || Txb_cantidad.Text == "" || Cbx_tipo.SelectedIndex == -1)
+            if (Txb_producto_nuevo.Text == "" || Txb_cantidad_prod_nuevo.Text == "" || Cbx_tipo_insumo.SelectedIndex == -1)
             {
                 MessageBox.Show("Por favor complete todos los campos", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            if (!int.TryParse(Txb_cantidad.Text, out int cantidad) || cantidad < 0)
+            if (!int.TryParse(Txb_cantidad_prod_nuevo.Text, out int cantidad) || cantidad < 0)
             {
                 MessageBox.Show("Por favor ingrese una cantidad valida", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
@@ -156,17 +159,17 @@ namespace SAGA_EV3
                 string nombre_producto = Txb_producto_nuevo.Text.Trim();
                 using (StreamWriter inventario = new StreamWriter("Inventario.TXT", true))
                 {
-                    inventario.WriteLine($"{Txb_producto_nuevo.Text};{cantidad};{Cbx_tipo.SelectedItem.ToString()}");
+                    inventario.WriteLine($"{Txb_producto_nuevo.Text};{cantidad};{Cbx_tipo_insumo.SelectedItem.ToString()}");
                 }
                 MessageBox.Show("Producto agregado exitosamente", "Exito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                Cargardatos_inventario();  
+                Cargardatos_inventario();
             }
         }
         private bool Existe_producto(string nombre)
         {
             foreach (DataRow row in dt.Rows)
             {
-                if (row["Nombre"].ToString().Equals(nombre, StringComparison.OrdinalIgnoreCase   ))
+                if (row["Nombre"].ToString().Equals(nombre, StringComparison.OrdinalIgnoreCase))
                 {
                     return true;
                 }
@@ -174,14 +177,14 @@ namespace SAGA_EV3
             return false;
         }
         private bool Validar_modificacion_productos(ComboBox seleccion, TextBox numero)
-        { 
+        {
             if (seleccion.SelectedValue == null)
             {
                 MessageBox.Show("Debe seleccionar un producto para agregar o restar existencias", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             DataRow[] fila_objetivo = dt.Select($"Nombre = '{seleccion.SelectedValue.ToString()}'");
-            int cantidad_actual= int.Parse(fila_objetivo[0]["Cantidad"].ToString());
+            int cantidad_actual = int.Parse(fila_objetivo[0]["Cantidad"].ToString());
 
             if (!int.TryParse(numero.Text, out int cantidad) || int.Parse(numero.Text) <= 0 || int.Parse(numero.Text) > cantidad_actual)
             {
@@ -189,28 +192,6 @@ namespace SAGA_EV3
                 return false;
             }
             return true;
-        }
-        private void BTN_agregar_existencias_Click(object sender, EventArgs e)
-        {
-             if (Validar_modificacion_productos(CBX_existencia,Txb_cantidad))
-             {
-                int cantidad_ingresada = int.Parse(TXB_agregar_cantidad_existencia.Text);
-                try
-                {
-                
-                    using (StreamWriter inventario = new StreamWriter("Inventario.TXT", true))
-                    {
-                        DataRow[] fila = dt.Select($"Nombre = '{CBX_existencia.SelectedValue.ToString()}'");
-                        fila[0]["Cantidad"] = (int.Parse(fila[0]["Cantidad"].ToString())) + cantidad_ingresada;
-
-                    }
-
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error al agregar existencias: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
         }
         private void BTN_eliminar_Click(object sender, EventArgs e)
         {
@@ -244,25 +225,6 @@ namespace SAGA_EV3
         }
         private void BTN_eliminar_cantidad_Click(object sender, EventArgs e)
         {
-            if (Validar_modificacion_productos(CBX_eliminacion,TXB_Eliminacion_cantidad))
-            {
-                int cantidad_ingresada = int.Parse(TXB_Eliminacion_cantidad.Text);
-                try
-                {
-
-                    using (StreamWriter inventario = new StreamWriter("Inventario.TXT", true))
-                    {
-                        DataRow[] fila = dt.Select($"Nombre = '{CBX_eliminacion.SelectedValue.ToString()}'");
-                        fila[0]["Cantidad"] = (int.Parse(fila[0]["Cantidad"].ToString())) - cantidad_ingresada;
-
-                    }
-
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error al restar existencias: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
         }
         private void TSM_eliminar_producto_Click(object sender, EventArgs e)
         {
@@ -293,7 +255,7 @@ namespace SAGA_EV3
             TSM_eliminar_producto.Checked = false;
             Tsm_nuevo_prod.Checked = false;
             Tsm_agregar_existente.Checked = false;
-            
+
             Tsm_agregar.Checked = false;
 
 
@@ -303,7 +265,7 @@ namespace SAGA_EV3
         }
         private void Tsm_gestion_usuarios_Click(object sender, EventArgs e)
         {
-             
+
             Pnl_gestionUsuarios.Visible = true;
             Pnl_agregar_existente.Visible = false;
             Pnl_agregar_nuevo.Visible = false;
@@ -320,7 +282,7 @@ namespace SAGA_EV3
         private void Btn_filtrar_Click(object sender, EventArgs e)
         {
             string filtro_tipo = Cbx_filtro_tipo_usuario.SelectedValue.ToString();
-            string filtro_nombre= Txb_filtro_nombre_usuario.Text.Trim();
+            string filtro_nombre = Txb_filtro_nombre_usuario.Text.Trim();
             DataView dv = dt_usuarios.DefaultView;
             try
             {
@@ -332,7 +294,7 @@ namespace SAGA_EV3
                 MessageBox.Show("Error al aplicar filtro: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            
+
 
         }
         string usuario_seleccionado;
@@ -366,25 +328,25 @@ namespace SAGA_EV3
             {
                 MessageBox.Show("Error al cargar datos del usuario: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
-            }   
+            }
         }
-        
+
         private void Btn_guardar_cambios_usuarios_Click(object sender, EventArgs e)
         {
             try
             {
-               if (Txb_modificar_nombre_usuario.Text.Trim() != "" && Cbx_modificar_tipo_usuario.SelectedIndex != -1)
-               {
+                if (Txb_modificar_nombre_usuario.Text.Trim() != "" && Cbx_modificar_tipo_usuario.SelectedIndex != -1)
+                {
                     var user = usuarios.FirstOrDefault(x => x.GetNombre() == usuario_seleccionado);
                     user._Nombre = Txb_modificar_nombre_usuario.Text.Trim();
                     user._Rol = Cbx_modificar_tipo_usuario.SelectedItem.ToString();
-               }
-               if (Guardar_cambios_usuario())
+                }
+                if (Guardar_cambios_usuario())
                 {
                     MessageBox.Show("Cambios guardados exitosamente", "Exito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     Pnl_edicion.Visible = false;
                 }
-               
+
 
             }
             catch (Exception ex)
@@ -412,17 +374,69 @@ namespace SAGA_EV3
         private void Cbx_filtro_tipo_usuario_SelectedIndexChanged(object sender, EventArgs e)
         {
 
-            //se toma el valor seleccionado y se establece como el filtro
-            string filtro = Cbx_filtro_tipo_usuario.SelectedValue.ToString();
-            //se accede a la propiedad del DataTable llamada defaultView, esto devuelve una vista que permite agregar filtros
-            DataView dv = dt_usuarios.DefaultView;
-            //se aplica un filtro al DataView, busca los valores de una columna [Tipo de usuario] que coincidan con el filtro
-            //% o comodin representa cualquier secuencia de caracteres y su orden es importante 
-            dv.RowFilter = $"[Tipo de usuario] LIKE '%{filtro}%'";
-            //Trasforma la Dataview en una tabla y la asigna al DataGridView
-            Dgv_gestionUsuarios.DataSource = dv.ToTable();
+
 
 
         }
+
+        private void Btn_editar_Click(object sender, EventArgs e)
+        {
+            Pnl_edicion.Visible = true;
+            Txb_modificar_nombre_usuario.Text = Dgv_gestionUsuarios.SelectedRows[0].Cells["Nombre de Usuario"].Value.ToString();
+            if (Dgv_gestionUsuarios.SelectedRows[0].Cells["Tipo de usuario"].Value.ToString() == "Administrador")
+            {
+                Cbx_modificar_tipo_usuario.SelectedIndex = 0;
+            }
+            else
+            {
+                Cbx_modificar_tipo_usuario.SelectedIndex = 1;
+
+            }
+        }
+
+        private void PNL_eliminacion_cantidad_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void BTN_agregar_existencias_Click_1(object sender, EventArgs e)
+        {
+            if (Validar_modificacion_productos(CBX_existencia, TXB_agregar_cantidad_existencia))
+            {
+                if (CBX_existencia.SelectedIndex == -1 || TXB_agregar_cantidad_existencia.Text == "")
+                {
+                    MessageBox.Show("Debe seleccionar el producto a eliminar", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                string seleccionado = CBX_existencia.SelectedValue.ToString();
+                var sb = new StringBuilder();
+
+                // Construir todo el contenido nuevo en memoria (sin el producto a modificar)
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    var nombreObj = dt.Rows[i]["Nombre"];
+                    if (nombreObj == null || nombreObj == DBNull.Value) continue;
+
+                    string nombre = nombreObj.ToString();
+                    //Transferir solo los que no coinciden con el seleccionado
+                    if (!string.Equals(nombre, seleccionado, StringComparison.Ordinal))
+                    {
+                        sb.AppendFormat("{0};{1};{2}\n", dt.Rows[i]["Nombre"], dt.Rows[i]["Cantidad"], dt.Rows[i]["Tipo"]);
+                    }
+                    else
+                    {
+                        int nueva_cantidad = int.Parse(dt.Rows[i]["Cantidad"].ToString()) + int.Parse(TXB_agregar_cantidad_existencia.Text);
+                        sb.AppendFormat("{0};{1};{2}\n", dt.Rows[i]["Nombre"], nueva_cantidad, dt.Rows[i]["Tipo"]);
+                    }
+                    File.WriteAllText("Inventario.TXT", sb.ToString());
+                    MessageBox.Show("Existencias agregadas exitosamente", "Exito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    Cargardatos_inventario();
+                    
+                }
+            }
+        }
     }
 }
+
+
