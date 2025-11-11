@@ -139,7 +139,6 @@
             this.Tsm_agregar.Name = "Tsm_agregar";
             this.Tsm_agregar.Size = new System.Drawing.Size(117, 22);
             this.Tsm_agregar.Text = "Agregar";
-            this.Tsm_agregar.Click += new System.EventHandler(this.Tsm_agregar_Click);
             // 
             // Tsm_nuevo_prod
             // 
@@ -624,7 +623,6 @@
             this.Lbl_usuario_logeado.Size = new System.Drawing.Size(44, 13);
             this.Lbl_usuario_logeado.TabIndex = 34;
             this.Lbl_usuario_logeado.Text = "Nombre";
-            this.Lbl_usuario_logeado.Click += new System.EventHandler(this.Lbl_usuario_logeado_Click);
             // 
             // Btn_cerrarSesion
             // 
