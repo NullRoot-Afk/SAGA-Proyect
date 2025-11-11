@@ -37,6 +37,7 @@
             this.TSM_eliminar_producto = new System.Windows.Forms.ToolStripMenuItem();
             this.TSM_eliminar_existencias = new System.Windows.Forms.ToolStripMenuItem();
             this.Tsm_gestion_usuarios = new System.Windows.Forms.ToolStripMenuItem();
+            this.Tsm_agregar_usuario = new System.Windows.Forms.ToolStripMenuItem();
             this.gestionDeEmpleadosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Pnl_agregar_nuevo = new System.Windows.Forms.Panel();
             this.Txb_producto_nuevo = new System.Windows.Forms.TextBox();
@@ -76,6 +77,16 @@
             this.BTN_eliminar_cantidad = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.Pnl_gestionUsuarios = new System.Windows.Forms.Panel();
+            this.Pnl_edicion = new System.Windows.Forms.Panel();
+            this.label12 = new System.Windows.Forms.Label();
+            this.Btn_guardar_cambios = new System.Windows.Forms.Button();
+            this.Cbx_modificar_tipo_usuario = new System.Windows.Forms.ComboBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.Txb_modificar_nombre_usuario = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.Btn_editar = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.Txb_filtro_nombre_usuario = new System.Windows.Forms.TextBox();
@@ -84,17 +95,6 @@
             this.Dgv_gestionUsuarios = new System.Windows.Forms.DataGridView();
             this.Lbl_usuario_logeado = new System.Windows.Forms.Label();
             this.Btn_cerrarSesion = new System.Windows.Forms.Button();
-            this.Tsm_agregar_usuario = new System.Windows.Forms.ToolStripMenuItem();
-            this.Cbx_modificar_tipo_usuario = new System.Windows.Forms.ComboBox();
-            this.label11 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.Txb_modificar_nombre_usuario = new System.Windows.Forms.TextBox();
-            this.label10 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.Btn_guardar_cambios = new System.Windows.Forms.Button();
-            this.label12 = new System.Windows.Forms.Label();
-            this.Btn_editar = new System.Windows.Forms.Button();
-            this.Pnl_edicion = new System.Windows.Forms.Panel();
             this.menuStrip1.SuspendLayout();
             this.Pnl_agregar_nuevo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_inventario)).BeginInit();
@@ -106,8 +106,8 @@
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.Pnl_gestionUsuarios.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Dgv_gestionUsuarios)).BeginInit();
             this.Pnl_edicion.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Dgv_gestionUsuarios)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -162,7 +162,6 @@
             this.Tsm_Eliminar.Name = "Tsm_Eliminar";
             this.Tsm_Eliminar.Size = new System.Drawing.Size(117, 22);
             this.Tsm_Eliminar.Text = "Eliminar";
-            this.Tsm_Eliminar.Click += new System.EventHandler(this.Tsm_Eliminar_Click);
             // 
             // TSM_eliminar_producto
             // 
@@ -186,6 +185,12 @@
             this.Tsm_gestion_usuarios.Size = new System.Drawing.Size(122, 20);
             this.Tsm_gestion_usuarios.Text = "Gestion de usuarios";
             this.Tsm_gestion_usuarios.Click += new System.EventHandler(this.Tsm_gestion_usuarios_Click);
+            // 
+            // Tsm_agregar_usuario
+            // 
+            this.Tsm_agregar_usuario.Name = "Tsm_agregar_usuario";
+            this.Tsm_agregar_usuario.Size = new System.Drawing.Size(159, 22);
+            this.Tsm_agregar_usuario.Text = "Agregar Usuario";
             // 
             // gestionDeEmpleadosToolStripMenuItem
             // 
@@ -554,6 +559,104 @@
             this.Pnl_gestionUsuarios.Size = new System.Drawing.Size(776, 422);
             this.Pnl_gestionUsuarios.TabIndex = 32;
             // 
+            // Pnl_edicion
+            // 
+            this.Pnl_edicion.Controls.Add(this.label12);
+            this.Pnl_edicion.Controls.Add(this.Btn_guardar_cambios);
+            this.Pnl_edicion.Controls.Add(this.Cbx_modificar_tipo_usuario);
+            this.Pnl_edicion.Controls.Add(this.label11);
+            this.Pnl_edicion.Controls.Add(this.textBox2);
+            this.Pnl_edicion.Controls.Add(this.Txb_modificar_nombre_usuario);
+            this.Pnl_edicion.Controls.Add(this.label10);
+            this.Pnl_edicion.Controls.Add(this.label9);
+            this.Pnl_edicion.Location = new System.Drawing.Point(491, 65);
+            this.Pnl_edicion.Name = "Pnl_edicion";
+            this.Pnl_edicion.Size = new System.Drawing.Size(281, 302);
+            this.Pnl_edicion.TabIndex = 16;
+            this.Pnl_edicion.Visible = false;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label12.Location = new System.Drawing.Point(107, 7);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(101, 37);
+            this.label12.TabIndex = 14;
+            this.label12.Text = "Datos";
+            // 
+            // Btn_guardar_cambios
+            // 
+            this.Btn_guardar_cambios.Location = new System.Drawing.Point(92, 264);
+            this.Btn_guardar_cambios.Name = "Btn_guardar_cambios";
+            this.Btn_guardar_cambios.Size = new System.Drawing.Size(88, 35);
+            this.Btn_guardar_cambios.TabIndex = 13;
+            this.Btn_guardar_cambios.Text = "Guardar";
+            this.Btn_guardar_cambios.UseVisualStyleBackColor = true;
+            // 
+            // Cbx_modificar_tipo_usuario
+            // 
+            this.Cbx_modificar_tipo_usuario.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.Cbx_modificar_tipo_usuario.FormattingEnabled = true;
+            this.Cbx_modificar_tipo_usuario.Items.AddRange(new object[] {
+            "Administrador",
+            "Empleado"});
+            this.Cbx_modificar_tipo_usuario.Location = new System.Drawing.Point(114, 199);
+            this.Cbx_modificar_tipo_usuario.Name = "Cbx_modificar_tipo_usuario";
+            this.Cbx_modificar_tipo_usuario.Size = new System.Drawing.Size(159, 21);
+            this.Cbx_modificar_tipo_usuario.TabIndex = 12;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(20, 205);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(80, 13);
+            this.label11.TabIndex = 11;
+            this.label11.Text = "Tipo de usuario";
+            // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(114, 147);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.PasswordChar = '*';
+            this.textBox2.Size = new System.Drawing.Size(159, 20);
+            this.textBox2.TabIndex = 10;
+            // 
+            // Txb_modificar_nombre_usuario
+            // 
+            this.Txb_modificar_nombre_usuario.Location = new System.Drawing.Point(114, 95);
+            this.Txb_modificar_nombre_usuario.Name = "Txb_modificar_nombre_usuario";
+            this.Txb_modificar_nombre_usuario.Size = new System.Drawing.Size(159, 20);
+            this.Txb_modificar_nombre_usuario.TabIndex = 9;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(39, 150);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(61, 13);
+            this.label10.TabIndex = 8;
+            this.label10.Text = "Contraseña";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(8, 95);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(96, 13);
+            this.label9.TabIndex = 7;
+            this.label9.Text = "Nombre de usuario";
+            // 
+            // Btn_editar
+            // 
+            this.Btn_editar.Location = new System.Drawing.Point(420, 76);
+            this.Btn_editar.Name = "Btn_editar";
+            this.Btn_editar.Size = new System.Drawing.Size(54, 20);
+            this.Btn_editar.TabIndex = 15;
+            this.Btn_editar.Text = "Editar";
+            this.Btn_editar.UseVisualStyleBackColor = true;
+            // 
             // label8
             // 
             this.label8.AutoSize = true;
@@ -634,109 +737,6 @@
             this.Btn_cerrarSesion.UseVisualStyleBackColor = true;
             this.Btn_cerrarSesion.Click += new System.EventHandler(this.Btn_cerrarSesion_Click);
             // 
-            // Tsm_agregar_usuario
-            // 
-            this.Tsm_agregar_usuario.Name = "Tsm_agregar_usuario";
-            this.Tsm_agregar_usuario.Size = new System.Drawing.Size(180, 22);
-            this.Tsm_agregar_usuario.Text = "Agregar Usuario";
-            // 
-            // Cbx_modificar_tipo_usuario
-            // 
-            this.Cbx_modificar_tipo_usuario.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.Cbx_modificar_tipo_usuario.FormattingEnabled = true;
-            this.Cbx_modificar_tipo_usuario.Location = new System.Drawing.Point(114, 199);
-            this.Cbx_modificar_tipo_usuario.Name = "Cbx_modificar_tipo_usuario";
-            this.Cbx_modificar_tipo_usuario.Size = new System.Drawing.Size(159, 21);
-            this.Cbx_modificar_tipo_usuario.TabIndex = 12;
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(20, 205);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(80, 13);
-            this.label11.TabIndex = 11;
-            this.label11.Text = "Tipo de usuario";
-            // 
-            // textBox2
-            // 
-            this.textBox2.Location = new System.Drawing.Point(114, 147);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.PasswordChar = '*';
-            this.textBox2.Size = new System.Drawing.Size(159, 20);
-            this.textBox2.TabIndex = 10;
-            // 
-            // Txb_modificar_nombre_usuario
-            // 
-            this.Txb_modificar_nombre_usuario.Location = new System.Drawing.Point(114, 95);
-            this.Txb_modificar_nombre_usuario.Name = "Txb_modificar_nombre_usuario";
-            this.Txb_modificar_nombre_usuario.Size = new System.Drawing.Size(159, 20);
-            this.Txb_modificar_nombre_usuario.TabIndex = 9;
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(39, 150);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(61, 13);
-            this.label10.TabIndex = 8;
-            this.label10.Text = "Contraseña";
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(8, 95);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(96, 13);
-            this.label9.TabIndex = 7;
-            this.label9.Text = "Nombre de usuario";
-            // 
-            // Btn_guardar_cambios
-            // 
-            this.Btn_guardar_cambios.Location = new System.Drawing.Point(92, 264);
-            this.Btn_guardar_cambios.Name = "Btn_guardar_cambios";
-            this.Btn_guardar_cambios.Size = new System.Drawing.Size(88, 35);
-            this.Btn_guardar_cambios.TabIndex = 13;
-            this.Btn_guardar_cambios.Text = "Guardar";
-            this.Btn_guardar_cambios.UseVisualStyleBackColor = true;
-            this.Btn_guardar_cambios.Click += new System.EventHandler(this.Btn_guardar_cambios_Click);
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label12.Location = new System.Drawing.Point(107, 7);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(101, 37);
-            this.label12.TabIndex = 14;
-            this.label12.Text = "Datos";
-            // 
-            // Btn_editar
-            // 
-            this.Btn_editar.Location = new System.Drawing.Point(420, 76);
-            this.Btn_editar.Name = "Btn_editar";
-            this.Btn_editar.Size = new System.Drawing.Size(54, 20);
-            this.Btn_editar.TabIndex = 15;
-            this.Btn_editar.Text = "Editar";
-            this.Btn_editar.UseVisualStyleBackColor = true;
-            this.Btn_editar.Click += new System.EventHandler(this.Btn_editar_Click);
-            // 
-            // Pnl_edicion
-            // 
-            this.Pnl_edicion.Controls.Add(this.label12);
-            this.Pnl_edicion.Controls.Add(this.Btn_guardar_cambios);
-            this.Pnl_edicion.Controls.Add(this.Cbx_modificar_tipo_usuario);
-            this.Pnl_edicion.Controls.Add(this.label11);
-            this.Pnl_edicion.Controls.Add(this.textBox2);
-            this.Pnl_edicion.Controls.Add(this.Txb_modificar_nombre_usuario);
-            this.Pnl_edicion.Controls.Add(this.label10);
-            this.Pnl_edicion.Controls.Add(this.label9);
-            this.Pnl_edicion.Location = new System.Drawing.Point(491, 65);
-            this.Pnl_edicion.Name = "Pnl_edicion";
-            this.Pnl_edicion.Size = new System.Drawing.Size(281, 302);
-            this.Pnl_edicion.TabIndex = 16;
-            this.Pnl_edicion.Visible = false;
-            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -771,9 +771,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.Pnl_gestionUsuarios.ResumeLayout(false);
             this.Pnl_gestionUsuarios.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Dgv_gestionUsuarios)).EndInit();
             this.Pnl_edicion.ResumeLayout(false);
             this.Pnl_edicion.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Dgv_gestionUsuarios)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

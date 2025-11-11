@@ -13,11 +13,8 @@ using System.Configuration;
 
 namespace SAGA_EV3
 {
-
-
     public partial class Form2 : Form
     {
-
         DataTable dt = new DataTable();
         DataTable dt_usuarios = new DataTable();
         List<Usuario> usuarios = new List<Usuario>();
@@ -27,7 +24,7 @@ namespace SAGA_EV3
         {
             InitializeComponent();
             CargarDatosUsuarios();
-            Cargardatos();
+            Cargardatos_inventario();
             this.usuario = usuario;
             this.rol = rol;
             Lbl_usuario_logeado.Text = $"Usuario: {usuario} - Rol: {rol}";
@@ -46,10 +43,7 @@ namespace SAGA_EV3
             Tsm_agregar.Checked = true;
             Tsm_Eliminar.Checked = false;
             Tsm_nuevo_prod.Checked = true;
-
-
         }
-
         private void Tsm_agregar_existente_Click(object sender, EventArgs e)
         {
             DGV_inventario.Refresh();
@@ -64,14 +58,6 @@ namespace SAGA_EV3
             Tsm_Eliminar.Checked = false;
             Tsm_agregar.Checked = true;
             Tsm_agregar_existente.Checked = true;
-
-
-
-        }
-
-        private void Tsm_Eliminar_Click(object sender, EventArgs e)
-        {
-
         }
         private void CargarDatosUsuarios()
         {   //inicio de seccion redundante(separar en un metodo unico)
@@ -84,7 +70,6 @@ namespace SAGA_EV3
             try
             {
                 string[] lines = File.ReadAllLines("Users.TXT");
-
                 for (int i = 0; i < lines.Length; i++)
                 {
                     string[] parts = lines[i].Split(';');
@@ -93,7 +78,6 @@ namespace SAGA_EV3
                         usuarios.Add(new Usuario(parts[0], parts[1], parts[2], parts[3]));
                         dt_usuarios.Rows.Add(usuarios[i].GetNombre(), usuarios[i].GetRol(), usuarios[i].GetFechaCreacion());
                     }
-
                 }
             }
             catch (Exception) 
@@ -103,7 +87,7 @@ namespace SAGA_EV3
             //fin de seccion redundante(separar en un metodo unico)
             Dgv_gestionUsuarios.DataSource = dt_usuarios;
         }
-        private void Cargardatos()
+        private void Cargardatos_inventario()
         {   //inicio de seccion redundante(separar en un metodo unico para reutilizar codigo)
             //Code to load data into the DataGridView
             if (!File.Exists("Inventario.TXT")) return;
@@ -115,7 +99,6 @@ namespace SAGA_EV3
             try
             {
                 string[] lines = File.ReadAllLines("Inventario.TXT");
-
                 for (int i = 0; i < lines.Length; i++)
                 {
                     string[] parts = lines[i].Split(';');
@@ -123,7 +106,6 @@ namespace SAGA_EV3
                     {
                         dt.Rows.Add(parts[0], int.Parse(parts[1]), parts[2]);
                     }
-
                 }
             }
             catch (Exception)
@@ -151,13 +133,6 @@ namespace SAGA_EV3
             Cbx_filtro_tipo_usuario.DataSource = dt_usuarios.DefaultView.ToTable(true, "Tipo de usuario");
             Cbx_filtro_tipo_usuario.DisplayMember = "Tipo de usuario";
             Cbx_filtro_tipo_usuario.ValueMember = "Tipo de usuario";
-            Cbx_modificar_tipo_usuario.DataSource = dt_usuarios.DefaultView.ToTable(true, "Tipo de usuario");
-            Cbx_modificar_tipo_usuario.DisplayMember = "Tipo de usuario";
-            Cbx_modificar_tipo_usuario.ValueMember = "Tipo de usuario";
-
-
-
-
         }
         private void Btn_Agregar_prod_nuevo_Click(object sender, EventArgs e)
         {
@@ -170,11 +145,7 @@ namespace SAGA_EV3
             {
                 MessageBox.Show("Por favor ingrese una cantidad valida", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
-
             }
-
-            
-
             else if (Existe_producto(Txb_producto_nuevo.Text))
             {
                 MessageBox.Show("El producto ya existe, si desea agregar existencias vaya al apartado correspondiente", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -187,10 +158,8 @@ namespace SAGA_EV3
                 {
                     inventario.WriteLine($"{Txb_producto_nuevo.Text};{cantidad};{Cbx_tipo.SelectedItem.ToString()}");
                 }
-
                 MessageBox.Show("Producto agregado exitosamente", "Exito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                Cargardatos();  
-
+                Cargardatos_inventario();  
             }
         }
         private bool Existe_producto(string nombre)
@@ -204,15 +173,13 @@ namespace SAGA_EV3
             }
             return false;
         }
-        private bool validar_modificacion(ComboBox seleccion, TextBox numero)
+        private bool Validar_modificacion_productos(ComboBox seleccion, TextBox numero)
         { 
-
             if (seleccion.SelectedValue == null)
             {
                 MessageBox.Show("Debe seleccionar un producto para agregar o restar existencias", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
-
             DataRow[] fila_objetivo = dt.Select($"Nombre = '{seleccion.SelectedValue.ToString()}'");
             int cantidad_actual= int.Parse(fila_objetivo[0]["Cantidad"].ToString());
 
@@ -222,14 +189,11 @@ namespace SAGA_EV3
                 return false;
             }
             return true;
-
         }
         private void BTN_agregar_existencias_Click(object sender, EventArgs e)
         {
-  
-
-             if (validar_modificacion(CBX_existencia,Txb_cantidad))
-            {
+             if (Validar_modificacion_productos(CBX_existencia,Txb_cantidad))
+             {
                 int cantidad_ingresada = int.Parse(TXB_agregar_cantidad_existencia.Text);
                 try
                 {
@@ -276,11 +240,11 @@ namespace SAGA_EV3
             File.WriteAllText("Inventario.TXT", sb.ToString());
 
             MessageBox.Show("Producto eliminado exitosamente", "Exito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            Cargardatos();
+            Cargardatos_inventario();
         }
         private void BTN_eliminar_cantidad_Click(object sender, EventArgs e)
         {
-            if (validar_modificacion(CBX_eliminacion,TXB_Eliminacion_cantidad))
+            if (Validar_modificacion_productos(CBX_eliminacion,TXB_Eliminacion_cantidad))
             {
                 int cantidad_ingresada = int.Parse(TXB_Eliminacion_cantidad.Text);
                 try
@@ -372,7 +336,7 @@ namespace SAGA_EV3
 
         }
         string usuario_seleccionado;
-        private void Btn_editar_Click(object sender, EventArgs e)
+        private void Btn_editar_usuarios_Click(object sender, EventArgs e)
         {
             try
             {
@@ -380,8 +344,16 @@ namespace SAGA_EV3
                 if (Dgv_gestionUsuarios.SelectedRows.Count == 1)
                 {
                     usuario_seleccionado = Dgv_gestionUsuarios.SelectedRows[0].Cells["Nombre de Usuario"].Value.ToString();
+                    var user = usuarios.FirstOrDefault(x => x.GetNombre() == usuario_seleccionado);
                     Txb_modificar_nombre_usuario.Text = usuario_seleccionado;
-                    
+                    if (user.GetRol() == "Administrador")
+                    {
+                        Cbx_modificar_tipo_usuario.SelectedIndex = 0;
+                    }
+                    else
+                    {
+                        Cbx_modificar_tipo_usuario.SelectedIndex = 1;
+                    }
                 }
                 else
                 {
@@ -389,6 +361,7 @@ namespace SAGA_EV3
                     return;
                 }
             }
+
             catch (Exception ex)
             {
                 MessageBox.Show("Error al cargar datos del usuario: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -396,24 +369,39 @@ namespace SAGA_EV3
             }   
         }
         
-        private void Btn_guardar_cambios_Click(object sender, EventArgs e)
+        private void Btn_guardar_cambios_usuarios_Click(object sender, EventArgs e)
         {
             try
             {
-               if (Txb_modificar_nombre_usuario.Text.Trim() != "" && Cbx_modificar_tipo_usuario.SelectedIndex != 0)
+               if (Txb_modificar_nombre_usuario.Text.Trim() != "" && Cbx_modificar_tipo_usuario.SelectedIndex != -1)
                {
                     var user = usuarios.FirstOrDefault(x => x.GetNombre() == usuario_seleccionado);
                     user._Nombre = Txb_modificar_nombre_usuario.Text.Trim();
-                    user._Rol = Cbx_modificar_tipo_usuario.SelectedValue.ToString();
+                    user._Rol = Cbx_modificar_tipo_usuario.SelectedItem.ToString();
+               }
+               if (Guardar_cambios_usuario())
+                {
+                    MessageBox.Show("Cambios guardados exitosamente", "Exito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    Pnl_edicion.Visible = false;
                 }
                
+
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error al guardar cambios: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            Cargardatos();
+        }
+        private bool Guardar_cambios_usuario()
+        {
+            var sb = new StringBuilder();
+            foreach (var user in usuarios)
+            {
+                sb.AppendFormat("{0};{1};{2};{3}\n", user.GetNombre(), user.GetHash(), user.GetRol(), user.GetFechaCreacion());
+            }
+            File.WriteAllText("Users.TXT", sb.ToString());
+            return true;
         }
 
         private void Dgv_gestionUsuarios_SelectionChanged(object sender, EventArgs e)

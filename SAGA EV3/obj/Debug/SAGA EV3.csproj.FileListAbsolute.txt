@@ -23,3 +23,27 @@ C:\Users\luisl\source\repos\SAGA EV3\SAGA EV3\obj\Debug\SAGA EV3.csproj.Up2Date
 C:\Users\luisl\source\repos\SAGA EV3\SAGA EV3\obj\Debug\SAGA EV3.exe
 C:\Users\luisl\source\repos\SAGA EV3\SAGA EV3\obj\Debug\SAGA EV3.pdb
 C:\Users\luisl\source\repos\SAGA EV3\SAGA EV3\obj\Debug\SAGA EV3.exe.config
+C:\Users\Alumnos\SAGA-Proyect\SAGA EV3\bin\Debug\SAGA EV3.exe.config
+C:\Users\Alumnos\SAGA-Proyect\SAGA EV3\bin\Debug\SAGA EV3.exe
+C:\Users\Alumnos\SAGA-Proyect\SAGA EV3\bin\Debug\SAGA EV3.pdb
+C:\Users\Alumnos\SAGA-Proyect\SAGA EV3\bin\Debug\Konscious.Security.Cryptography.Argon2.dll
+C:\Users\Alumnos\SAGA-Proyect\SAGA EV3\bin\Debug\Konscious.Security.Cryptography.Blake2.dll
+C:\Users\Alumnos\SAGA-Proyect\SAGA EV3\bin\Debug\System.Buffers.dll
+C:\Users\Alumnos\SAGA-Proyect\SAGA EV3\bin\Debug\System.Memory.dll
+C:\Users\Alumnos\SAGA-Proyect\SAGA EV3\bin\Debug\System.Numerics.Vectors.dll
+C:\Users\Alumnos\SAGA-Proyect\SAGA EV3\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\Alumnos\SAGA-Proyect\SAGA EV3\bin\Debug\Konscious.Security.Cryptography.Argon2.xml
+C:\Users\Alumnos\SAGA-Proyect\SAGA EV3\bin\Debug\Konscious.Security.Cryptography.Blake2.xml
+C:\Users\Alumnos\SAGA-Proyect\SAGA EV3\bin\Debug\System.Buffers.xml
+C:\Users\Alumnos\SAGA-Proyect\SAGA EV3\bin\Debug\System.Memory.xml
+C:\Users\Alumnos\SAGA-Proyect\SAGA EV3\bin\Debug\System.Numerics.Vectors.xml
+C:\Users\Alumnos\SAGA-Proyect\SAGA EV3\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+C:\Users\Alumnos\SAGA-Proyect\SAGA EV3\obj\Debug\SAGA EV3.csproj.AssemblyReference.cache
+C:\Users\Alumnos\SAGA-Proyect\SAGA EV3\obj\Debug\SAGA_EV3.Form1.resources
+C:\Users\Alumnos\SAGA-Proyect\SAGA EV3\obj\Debug\SAGA_EV3.Form2.resources
+C:\Users\Alumnos\SAGA-Proyect\SAGA EV3\obj\Debug\SAGA_EV3.Properties.Resources.resources
+C:\Users\Alumnos\SAGA-Proyect\SAGA EV3\obj\Debug\SAGA EV3.csproj.GenerateResource.cache
+C:\Users\Alumnos\SAGA-Proyect\SAGA EV3\obj\Debug\SAGA EV3.csproj.CoreCompileInputs.cache
+C:\Users\Alumnos\SAGA-Proyect\SAGA EV3\obj\Debug\SAGA EV3.csproj.Up2Date
+C:\Users\Alumnos\SAGA-Proyect\SAGA EV3\obj\Debug\SAGA EV3.exe
+C:\Users\Alumnos\SAGA-Proyect\SAGA EV3\obj\Debug\SAGA EV3.pdb
