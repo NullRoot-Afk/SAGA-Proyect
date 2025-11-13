@@ -1,0 +1,3 @@
+adsda;23;Medicamentos
+asdas;10;Alimentos
+dasdas;0;Alimentos

@@ -164,6 +164,9 @@ namespace SAGA_EV3
                 MessageBox.Show("Producto agregado exitosamente", "Exito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 Cargardatos_inventario();
             }
+            Cbx_tipo_insumo.SelectedIndex = -1;
+            Txb_cantidad_prod_nuevo.Text = string.Empty;
+            Txb_producto_nuevo.Text = string.Empty;
         }
         private bool Existe_producto(string nombre)
         {
@@ -225,6 +228,41 @@ namespace SAGA_EV3
         }
         private void BTN_eliminar_cantidad_Click(object sender, EventArgs e)
         {
+            if (Validar_modificacion_productos(CBX_eliminacion, TXB_Eliminacion_cantidad))
+            {
+                if (CBX_eliminacion.SelectedIndex == -1 || TXB_Eliminacion_cantidad.Text == "")
+                {
+                    MessageBox.Show("Debe llenar todos los datos", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                string seleccionado = CBX_eliminacion.SelectedValue.ToString();
+                var sb = new StringBuilder();
+
+                // Construir todo el contenido nuevo en memoria (sin el producto a modificar)
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    var nombreObj = dt.Rows[i]["Nombre"];
+                    if (nombreObj == null || nombreObj == DBNull.Value) continue;
+
+                    string nombre = nombreObj.ToString();
+                    //Transferir solo los que no coinciden con el seleccionado
+                    if (!string.Equals(nombre, seleccionado, StringComparison.Ordinal))
+                    {
+                        sb.AppendFormat("{0};{1};{2}\n", dt.Rows[i]["Nombre"], dt.Rows[i]["Cantidad"], dt.Rows[i]["Tipo"]);
+                    }
+                    else
+                    {
+                        int nueva_cantidad = int.Parse(dt.Rows[i]["Cantidad"].ToString()) - int.Parse(TXB_Eliminacion_cantidad.Text);
+                        sb.AppendFormat("{0};{1};{2}\n", dt.Rows[i]["Nombre"], nueva_cantidad, dt.Rows[i]["Tipo"]);
+                    }
+                }
+                    File.WriteAllText("Inventario.TXT", sb.ToString());
+                    MessageBox.Show("Existencias eliminadas exitosamente", "Exito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    Cargardatos_inventario();
+                    CBX_eliminacion.SelectedIndex = -1;
+                    TXB_Eliminacion_cantidad.Text = "";
+            }
         }
         private void TSM_eliminar_producto_Click(object sender, EventArgs e)
         {
@@ -306,8 +344,9 @@ namespace SAGA_EV3
                 if (Dgv_gestionUsuarios.SelectedRows.Count == 1)
                 {
                     usuario_seleccionado = Dgv_gestionUsuarios.SelectedRows[0].Cells["Nombre de Usuario"].Value.ToString();
-                    var user = usuarios.FirstOrDefault(x => x.GetNombre() == usuario_seleccionado);
                     Txb_modificar_nombre_usuario.Text = usuario_seleccionado;
+                    var user = usuarios.FirstOrDefault(x => string.Equals(x.GetNombre().Trim(), usuario_seleccionado.Trim(), StringComparison.OrdinalIgnoreCase));
+
                     if (user.GetRol() == "Administrador")
                     {
                         Cbx_modificar_tipo_usuario.SelectedIndex = 0;
@@ -330,31 +369,6 @@ namespace SAGA_EV3
                 return;
             }
         }
-
-        private void Btn_guardar_cambios_usuarios_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                if (Txb_modificar_nombre_usuario.Text.Trim() != "" && Cbx_modificar_tipo_usuario.SelectedIndex != -1)
-                {
-                    var user = usuarios.FirstOrDefault(x => x.GetNombre() == usuario_seleccionado);
-                    user._Nombre = Txb_modificar_nombre_usuario.Text.Trim();
-                    user._Rol = Cbx_modificar_tipo_usuario.SelectedItem.ToString();
-                }
-                if (Guardar_cambios_usuario())
-                {
-                    MessageBox.Show("Cambios guardados exitosamente", "Exito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    Pnl_edicion.Visible = false;
-                }
-
-
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error al guardar cambios: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-        }
         private bool Guardar_cambios_usuario()
         {
             var sb = new StringBuilder();
@@ -369,34 +383,6 @@ namespace SAGA_EV3
         private void Dgv_gestionUsuarios_SelectionChanged(object sender, EventArgs e)
         {
             Btn_editar.Enabled = Dgv_gestionUsuarios.SelectedRows.Count == 1;
-        }
-
-        private void Cbx_filtro_tipo_usuario_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-
-
-
-        }
-
-        private void Btn_editar_Click(object sender, EventArgs e)
-        {
-            Pnl_edicion.Visible = true;
-            Txb_modificar_nombre_usuario.Text = Dgv_gestionUsuarios.SelectedRows[0].Cells["Nombre de Usuario"].Value.ToString();
-            if (Dgv_gestionUsuarios.SelectedRows[0].Cells["Tipo de usuario"].Value.ToString() == "Administrador")
-            {
-                Cbx_modificar_tipo_usuario.SelectedIndex = 0;
-            }
-            else
-            {
-                Cbx_modificar_tipo_usuario.SelectedIndex = 1;
-
-            }
-        }
-
-        private void PNL_eliminacion_cantidad_Paint(object sender, PaintEventArgs e)
-        {
-
         }
 
         private void BTN_agregar_existencias_Click_1(object sender, EventArgs e)
@@ -429,11 +415,50 @@ namespace SAGA_EV3
                         int nueva_cantidad = int.Parse(dt.Rows[i]["Cantidad"].ToString()) + int.Parse(TXB_agregar_cantidad_existencia.Text);
                         sb.AppendFormat("{0};{1};{2}\n", dt.Rows[i]["Nombre"], nueva_cantidad, dt.Rows[i]["Tipo"]);
                     }
+                }
                     File.WriteAllText("Inventario.TXT", sb.ToString());
                     MessageBox.Show("Existencias agregadas exitosamente", "Exito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     Cargardatos_inventario();
+                TXB_agregar_cantidad_existencia.Text = string.Empty;
                     
+            }
+        }
+
+        private void Btn_editar_Click_1(object sender, EventArgs e)
+        {
+            Pnl_edicion.Visible = true;
+            Txb_modificar_nombre_usuario.Text = Dgv_gestionUsuarios.SelectedRows[0].Cells["Nombre de Usuario"].Value.ToString();
+            if (Dgv_gestionUsuarios.SelectedRows[0].Cells["Tipo de usuario"].Value.ToString() == "Administrador")
+            {
+                Cbx_modificar_tipo_usuario.SelectedIndex = 0;
+            }
+            else
+            {
+                Cbx_modificar_tipo_usuario.SelectedIndex = 1;
+
+            }
+        }
+
+        private void Btn_guardar_cambios_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (Txb_modificar_nombre_usuario.Text.Trim() != "" && Cbx_modificar_tipo_usuario.SelectedIndex != -1)
+                {
+                    var user = usuarios.FirstOrDefault(x => x.GetNombre() == usuario_seleccionado);
+                    user._Nombre = Txb_modificar_nombre_usuario.Text.Trim();
+                    user._Rol = Cbx_modificar_tipo_usuario.SelectedItem.ToString();
                 }
+                if (Guardar_cambios_usuario())
+                {
+                    MessageBox.Show("Cambios guardados exitosamente", "Exito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    Pnl_edicion.Visible = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al guardar cambios: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
             }
         }
     }
