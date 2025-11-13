@@ -11,6 +11,7 @@ using System.IO;
 using System.Xml;
 using System.Configuration;
 using System.Runtime.InteropServices;
+using System.Diagnostics.CodeAnalysis;
 
 namespace SAGA_EV3
 {
@@ -30,6 +31,14 @@ namespace SAGA_EV3
             this.usuario = usuario;
             this.rol = rol;
             Lbl_usuario_logeado.Text = $"Usuario: {usuario} - Rol: {rol}";
+            if (this.rol == "Empleado")
+            {
+                Tsm_gestion_usuarios.Enabled = false;
+                Tsm_nuevo_prod.Enabled = false;
+                TSM_eliminar_producto.Enabled = false;
+                Tsm_gestion_empleados.Enabled = false;
+
+            }
         }
         private void Tsm_nuevo_prod_Click(object sender, EventArgs e)
         {
@@ -44,6 +53,8 @@ namespace SAGA_EV3
             Tsm_agregar_existente.Checked = false;
             Tsm_agregar.Checked = true;
             Tsm_Eliminar.Checked = false;
+            TSM_eliminar_existencias.Checked = false;
+            TSM_eliminar_producto.Checked = false;
             Tsm_nuevo_prod.Checked = true;
         }
         private void Tsm_agregar_existente_Click(object sender, EventArgs e)
@@ -60,13 +71,15 @@ namespace SAGA_EV3
             Tsm_Eliminar.Checked = false;
             Tsm_agregar.Checked = true;
             Tsm_agregar_existente.Checked = true;
+            TSM_eliminar_existencias.Checked = false;
+            TSM_eliminar_producto.Checked = false;
         }
         private void Inicializar_dgv()
         {
             if (!File.Exists("Users.TXT")) return;
                 dt_usuarios.Columns.Add("Nombre de Usuario", typeof(string));
-                dt_usuarios.Columns.Add("Tipo de usuario", typeof(string));
-                dt_usuarios.Columns.Add("Fecha de creacion", typeof(string));
+                dt_usuarios.Columns.Add("Tipo de Usuario", typeof(string));
+                dt_usuarios.Columns.Add("Fecha de Creacion", typeof(string));
         }
         private void CargarDatosUsuarios()
         {
@@ -181,8 +194,9 @@ namespace SAGA_EV3
             }
             return false;
         }
-        private bool Validar_modificacion_productos(ComboBox seleccion, TextBox numero)
+        private bool Validar_modificacion_productos(ComboBox seleccion, TextBox numero, string tipo)
         {
+            string tipo_operacion = tipo;
             if (seleccion.SelectedValue == null)
             {
                 MessageBox.Show("Debe seleccionar un producto para agregar o restar existencias", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -190,13 +204,31 @@ namespace SAGA_EV3
             }
             DataRow[] fila_objetivo = dt.Select($"Nombre = '{seleccion.SelectedValue.ToString()}'");
             int cantidad_actual = int.Parse(fila_objetivo[0]["Cantidad"].ToString());
-
-            if (!int.TryParse(numero.Text, out int cantidad) || int.Parse(numero.Text) <= 0 || int.Parse(numero.Text) > cantidad_actual)
+            if (tipo_operacion == "resta")
             {
-                MessageBox.Show("La cantidad agregada debe ser mayor que cero y menor que la cantidad total en inventario", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;
+                if (!int.TryParse(numero.Text, out int cantidad) || int.Parse(numero.Text) <= 0 || int.Parse(numero.Text) > cantidad_actual)
+                {
+                    MessageBox.Show("La cantidad agregada debe ser mayor que cero y menor que la cantidad total en inventario", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
+                }
+                return true;
+                {
+
+                }
             }
-            return true;
+            else
+            {
+                if (!int.TryParse(numero.Text, out int cantidad) || int.Parse(numero.Text) <= 0)
+                {
+                    MessageBox.Show("La cantidad agregada debe ser mayor que cero y menor que la cantidad total en inventario", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
+                }
+                return true;
+                {
+
+                }
+            }
+
         }
         private void BTN_eliminar_Click(object sender, EventArgs e)
         {
@@ -230,7 +262,7 @@ namespace SAGA_EV3
         }
         private void BTN_eliminar_cantidad_Click(object sender, EventArgs e)
         {
-            if (Validar_modificacion_productos(CBX_eliminacion, TXB_Eliminacion_cantidad))
+            if (Validar_modificacion_productos(CBX_eliminacion, TXB_Eliminacion_cantidad,"resta"))
             {
                 if (CBX_eliminacion.SelectedIndex == -1 || TXB_Eliminacion_cantidad.Text == "")
                 {
@@ -344,7 +376,7 @@ namespace SAGA_EV3
 
         private void BTN_agregar_existencias_Click_1(object sender, EventArgs e)
         {
-            if (Validar_modificacion_productos(CBX_existencia, TXB_agregar_cantidad_existencia))
+            if (Validar_modificacion_productos(CBX_existencia, TXB_agregar_cantidad_existencia,"suma"))
             {
                 if (CBX_existencia.SelectedIndex == -1 || TXB_agregar_cantidad_existencia.Text == "")
                 {
@@ -440,6 +472,7 @@ namespace SAGA_EV3
                 }
                 if (Guardar_cambios_usuario())
                 {
+                    CargarDatosUsuarios();
                     MessageBox.Show("Cambios guardados exitosamente", "Exito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     Pnl_edicion_usuario.Visible = false;
                 }
@@ -471,22 +504,58 @@ namespace SAGA_EV3
 
         private void Btn_filtrar_Click_1(object sender, EventArgs e)
         {
-            string filtro_tipo = Cbx_filtro_tipo_usuario.SelectedItem.ToString();
-            string filtro_nombre = Txb_filtro_nombre_usuario.Text.Trim();
-            DataView dv = dt_usuarios.DefaultView;
-            try
+            if (Txb_filtro_nombre_usuario.Text.Trim() == "" && Cbx_filtro_tipo_usuario.SelectedIndex != -1)
             {
-                dv.RowFilter = $"[Tipo de usuario] LIKE '%{filtro_tipo}%' AND [Nombre de Usuario] LIKE '%{filtro_nombre}%'";
-                Dgv_gestionUsuarios.DataSource = dv.ToTable();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error al aplicar filtro: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
+                try
+                {
+                    string filtro_tipo = Cbx_filtro_tipo_usuario.SelectedItem.ToString();
+                    DataView dv = dt_usuarios.DefaultView;
+                    dv.RowFilter = $"[Tipo de Usuario] LIKE '%{filtro_tipo}%'";
+                    Dgv_gestionUsuarios.DataSource = dv.ToTable();
 
+                }
+                catch (Exception ex) {
+                    MessageBox.Show("Error al aplicar filtro: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+            }
+            else if (Txb_filtro_nombre_usuario.Text.Trim()  != "" && Cbx_filtro_tipo_usuario.SelectedIndex == -1)
+            {
+                try
+                {
+                    string filtro_nombre = Txb_filtro_nombre_usuario.Text.Trim();
+                    DataView dv = dt_usuarios.DefaultView;
+                    dv.RowFilter = $"[Nombre de Usuario] LIKE '%{filtro_nombre}%'";
+                    Dgv_gestionUsuarios.DataSource = dv.ToTable();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error al aplicar filtro: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+            }
+            else if (Txb_filtro_nombre_usuario.Text.Trim() != "" && Cbx_filtro_tipo_usuario.SelectedIndex != -1)
+            {
+                try
+                {
+                    string filtro_tipo = Cbx_filtro_tipo_usuario.SelectedItem.ToString();
+                    string filtro_nombre = Txb_filtro_nombre_usuario.Text.Trim();
+                    DataView dv = dt_usuarios.DefaultView;
+                    dv.RowFilter = $"[Nombre de Usuario] LIKE '%{filtro_nombre}%' AND [Tipo de Usuario] LIKE '%{filtro_tipo}%'";
+                    Dgv_gestionUsuarios.DataSource = dv.ToTable();
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show("Error al aplicar filtro: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                }
+            }
+            else
+            {
+                MessageBox.Show("Primero debe establecer los criterios de busqueda","Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+            }
         }
-
         private void Btn_eliminar_usuario_Click(object sender, EventArgs e)
         {
             if (Dgv_gestionUsuarios.SelectedRows.Count == 0) return;
@@ -498,9 +567,11 @@ namespace SAGA_EV3
 
         private void Btn_restablecer_filtros_Click(object sender, EventArgs e)
         {
+            Cbx_filtro_tipo_usuario.SelectedIndex = -1;
             DataView dv = dt_usuarios.DefaultView;
             dv.RowFilter = "";
             Dgv_gestionUsuarios.DataSource = dv.ToTable();
+            Txb_filtro_nombre_usuario.Text = string.Empty;
         }
     }
 }

@@ -37,8 +37,7 @@
             this.TSM_eliminar_producto = new System.Windows.Forms.ToolStripMenuItem();
             this.TSM_eliminar_existencias = new System.Windows.Forms.ToolStripMenuItem();
             this.Tsm_gestion_usuarios = new System.Windows.Forms.ToolStripMenuItem();
-            this.Tsm_agregar_usuario = new System.Windows.Forms.ToolStripMenuItem();
-            this.gestionDeEmpleadosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.Tsm_gestion_empleados = new System.Windows.Forms.ToolStripMenuItem();
             this.Pnl_agregar_nuevo = new System.Windows.Forms.Panel();
             this.DGV_inventario = new System.Windows.Forms.DataGridView();
             this.Txb_producto_nuevo = new System.Windows.Forms.TextBox();
@@ -127,7 +126,7 @@
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.gestionDeInventarioToolStripMenuItem,
             this.Tsm_gestion_usuarios,
-            this.gestionDeEmpleadosToolStripMenuItem});
+            this.Tsm_gestion_empleados});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(800, 24);
@@ -149,7 +148,7 @@
             this.Tsm_nuevo_prod,
             this.Tsm_agregar_existente});
             this.Tsm_agregar.Name = "Tsm_agregar";
-            this.Tsm_agregar.Size = new System.Drawing.Size(117, 22);
+            this.Tsm_agregar.Size = new System.Drawing.Size(180, 22);
             this.Tsm_agregar.Text = "Agregar";
             // 
             // Tsm_nuevo_prod
@@ -172,7 +171,7 @@
             this.TSM_eliminar_producto,
             this.TSM_eliminar_existencias});
             this.Tsm_Eliminar.Name = "Tsm_Eliminar";
-            this.Tsm_Eliminar.Size = new System.Drawing.Size(117, 22);
+            this.Tsm_Eliminar.Size = new System.Drawing.Size(180, 22);
             this.Tsm_Eliminar.Text = "Eliminar";
             // 
             // TSM_eliminar_producto
@@ -191,24 +190,16 @@
             // 
             // Tsm_gestion_usuarios
             // 
-            this.Tsm_gestion_usuarios.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.Tsm_agregar_usuario});
             this.Tsm_gestion_usuarios.Name = "Tsm_gestion_usuarios";
             this.Tsm_gestion_usuarios.Size = new System.Drawing.Size(122, 20);
             this.Tsm_gestion_usuarios.Text = "Gestion de usuarios";
             this.Tsm_gestion_usuarios.Click += new System.EventHandler(this.Tsm_gestion_usuarios_Click);
             // 
-            // Tsm_agregar_usuario
+            // Tsm_gestion_empleados
             // 
-            this.Tsm_agregar_usuario.Name = "Tsm_agregar_usuario";
-            this.Tsm_agregar_usuario.Size = new System.Drawing.Size(159, 22);
-            this.Tsm_agregar_usuario.Text = "Agregar Usuario";
-            // 
-            // gestionDeEmpleadosToolStripMenuItem
-            // 
-            this.gestionDeEmpleadosToolStripMenuItem.Name = "gestionDeEmpleadosToolStripMenuItem";
-            this.gestionDeEmpleadosToolStripMenuItem.Size = new System.Drawing.Size(136, 20);
-            this.gestionDeEmpleadosToolStripMenuItem.Text = "Gestion de Empleados";
+            this.Tsm_gestion_empleados.Name = "Tsm_gestion_empleados";
+            this.Tsm_gestion_empleados.Size = new System.Drawing.Size(136, 20);
+            this.Tsm_gestion_empleados.Text = "Gestion de Empleados";
             // 
             // Pnl_agregar_nuevo
             // 
@@ -891,11 +882,11 @@
             this.Controls.Add(this.Btn_cerrarSesion);
             this.Controls.Add(this.Lbl_usuario_logeado);
             this.Controls.Add(this.menuStrip1);
+            this.Controls.Add(this.PNL_eliminacion_cantidad);
             this.Controls.Add(this.Pnl_gestionUsuarios);
             this.Controls.Add(this.Pnl_agregar_nuevo);
             this.Controls.Add(this.Pnl_agregar_existente);
             this.Controls.Add(this.PNL_eliminacion_producto);
-            this.Controls.Add(this.PNL_eliminacion_cantidad);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form2";
             this.Text = "Form2";
@@ -934,7 +925,7 @@
         private System.Windows.Forms.ToolStripMenuItem Tsm_agregar;
         private System.Windows.Forms.ToolStripMenuItem Tsm_Eliminar;
         private System.Windows.Forms.ToolStripMenuItem Tsm_gestion_usuarios;
-        private System.Windows.Forms.ToolStripMenuItem gestionDeEmpleadosToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem Tsm_gestion_empleados;
         private System.Windows.Forms.Panel Pnl_agregar_nuevo;
         private System.Windows.Forms.Button Btn_Agregar_prod_nuevo;
         private System.Windows.Forms.ComboBox Cbx_tipo_insumo;
@@ -973,7 +964,6 @@
         private System.Windows.Forms.Panel Pnl_gestionUsuarios;
         private System.Windows.Forms.Label Lbl_usuario_logeado;
         private System.Windows.Forms.Button Btn_cerrarSesion;
-        private System.Windows.Forms.ToolStripMenuItem Tsm_agregar_usuario;
         private System.Windows.Forms.Panel Pnl_edicion_usuario;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Button Btn_guardar_cambios;

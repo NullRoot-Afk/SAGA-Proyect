@@ -1,2 +1,2 @@
-NullRoot;5vbel91LKOU4BaC0QwrEOQ==:Uzx/FOH0u6XUn3gHPRcCmjR+7La20e3XO+wd4tEmwj8=;Administrador;13-11-2025 17:16:59
-Luis;XEZe3WgrV8ZoLksoS0R1lQ==:MG1vfy/jClpcUgefWY5e03icAw0gyVacK9p3Jz7s6L8=;Empleado;13-11-2025 17:20:45
+NullRoot;+LxZVI4oVnRRkgbZfMVjCw==:kIZsaXER8B1ee0Ex1rXGGCmQ8c1MW0NydKOVLTJxeCo=;Administrador;13-11-2025 17:55:04
+Gustavo_el_marino;jENl6QR5Vayntocoi1c0JQ==:JBMy18dXsuBSzlgcKT+NULuB4fTOanvcUDBung+QD1o=;Administrador;13-11-2025 18:16:01
