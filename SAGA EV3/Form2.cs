@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Xml;
 using System.Configuration;
+using System.Runtime.InteropServices;
 
 namespace SAGA_EV3
 {
@@ -335,40 +336,7 @@ namespace SAGA_EV3
 
 
         }
-        string usuario_seleccionado;
-        private void Btn_editar_usuarios_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                Pnl_edicion.Visible = true;
-                if (Dgv_gestionUsuarios.SelectedRows.Count == 1)
-                {
-                    usuario_seleccionado = Dgv_gestionUsuarios.SelectedRows[0].Cells["Nombre de Usuario"].Value.ToString();
-                    Txb_modificar_nombre_usuario.Text = usuario_seleccionado;
-                    var user = usuarios.FirstOrDefault(x => string.Equals(x.GetNombre().Trim(), usuario_seleccionado.Trim(), StringComparison.OrdinalIgnoreCase));
 
-                    if (user.GetRol() == "Administrador")
-                    {
-                        Cbx_modificar_tipo_usuario.SelectedIndex = 0;
-                    }
-                    else
-                    {
-                        Cbx_modificar_tipo_usuario.SelectedIndex = 1;
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("Por favor seleccione un solo usuario para editar", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-            }
-
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error al cargar datos del usuario: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-        }
         private bool Guardar_cambios_usuario()
         {
             var sb = new StringBuilder();
@@ -382,7 +350,7 @@ namespace SAGA_EV3
 
         private void Dgv_gestionUsuarios_SelectionChanged(object sender, EventArgs e)
         {
-            Btn_editar.Enabled = Dgv_gestionUsuarios.SelectedRows.Count == 1;
+            Btn_editar_usuario.Enabled = Dgv_gestionUsuarios.SelectedRows.Count == 1;
         }
 
         private void BTN_agregar_existencias_Click_1(object sender, EventArgs e)
@@ -423,19 +391,40 @@ namespace SAGA_EV3
                     
             }
         }
-
+        string usuario_seleccionado;
+        private Usuario user;
         private void Btn_editar_Click_1(object sender, EventArgs e)
         {
-            Pnl_edicion.Visible = true;
-            Txb_modificar_nombre_usuario.Text = Dgv_gestionUsuarios.SelectedRows[0].Cells["Nombre de Usuario"].Value.ToString();
-            if (Dgv_gestionUsuarios.SelectedRows[0].Cells["Tipo de usuario"].Value.ToString() == "Administrador")
+            Pnl_edicion_usuario.Visible = true;
+            Pnl_agregar_usuario.Visible = false;
+            try
             {
-                Cbx_modificar_tipo_usuario.SelectedIndex = 0;
-            }
-            else
-            {
-                Cbx_modificar_tipo_usuario.SelectedIndex = 1;
+                if (Dgv_gestionUsuarios.SelectedRows.Count == 1)
+                {
+                    usuario_seleccionado = Dgv_gestionUsuarios.SelectedRows[0].Cells["Nombre de Usuario"].Value.ToString();
+                    Txb_modificar_nombre_usuario.Text = usuario_seleccionado;
+                    user = usuarios.FirstOrDefault(x => string.Equals(x.GetNombre().Trim(), usuario_seleccionado.Trim(), StringComparison.OrdinalIgnoreCase));
 
+                    if (user.GetRol() == "Administrador")
+                    {
+                        Cbx_modificar_tipo_usuario.SelectedIndex = 0;
+                    }
+                    else
+                    {
+                        Cbx_modificar_tipo_usuario.SelectedIndex = 1;
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Por favor seleccione un solo usuario para editar", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+            }
+
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al cargar datos del usuario: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
             }
         }
 
@@ -445,14 +434,25 @@ namespace SAGA_EV3
             {
                 if (Txb_modificar_nombre_usuario.Text.Trim() != "" && Cbx_modificar_tipo_usuario.SelectedIndex != -1)
                 {
-                    var user = usuarios.FirstOrDefault(x => x.GetNombre() == usuario_seleccionado);
                     user._Nombre = Txb_modificar_nombre_usuario.Text.Trim();
                     user._Rol = Cbx_modificar_tipo_usuario.SelectedItem.ToString();
+                    if (Tbx_modificar_contraseña.Text.Trim() != "")
+                    {
+                        if(Tbx_modificar_contraseña.Text.Length >= 8)
+                        {
+                            user.establecer_contraseña(Tbx_modificar_contraseña.Text.Trim());
+                        }
+                        else
+                        {
+                            MessageBox.Show("La contraseña ingresada no es valida, por favor ingresa una contraseña de mas de 8 caracteres", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+                    }
                 }
                 if (Guardar_cambios_usuario())
                 {
                     MessageBox.Show("Cambios guardados exitosamente", "Exito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    Pnl_edicion.Visible = false;
+                    Pnl_edicion_usuario.Visible = false;
                 }
             }
             catch (Exception ex)
@@ -460,6 +460,12 @@ namespace SAGA_EV3
                 MessageBox.Show("Error al guardar cambios: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+        }
+
+        private void Btn_agregar_usuario_Click(object sender, EventArgs e)
+        {
+            Pnl_agregar_usuario.Visible = true;
+            Pnl_edicion_usuario.Visible = false;
         }
     }
 }
