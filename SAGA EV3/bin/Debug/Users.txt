@@ -1,1 +1,2 @@
-NullRoot;5h33JW/tZx6L4/eHzhgYnA==:TXA9W945MLjZ84cTS51Y2HAAjiDQFBnX4zfKEGyh9+k=;Administrador;00/00/00
+NullRoot;5vbel91LKOU4BaC0QwrEOQ==:Uzx/FOH0u6XUn3gHPRcCmjR+7La20e3XO+wd4tEmwj8=;Administrador;13-11-2025 17:16:59
+Luis;XEZe3WgrV8ZoLksoS0R1lQ==:MG1vfy/jClpcUgefWY5e03icAw0gyVacK9p3Jz7s6L8=;Empleado;13-11-2025 17:20:45

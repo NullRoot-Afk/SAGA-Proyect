@@ -75,6 +75,9 @@
             this.BTN_eliminar_cantidad = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.Pnl_gestionUsuarios = new System.Windows.Forms.Panel();
+            this.Btn_eliminar_usuario = new System.Windows.Forms.Button();
+            this.Btn_restablecer_filtros = new System.Windows.Forms.Button();
+            this.Btn_agregar_usuario = new System.Windows.Forms.Button();
             this.Btn_editar_usuario = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
@@ -82,6 +85,15 @@
             this.Cbx_filtro_tipo_usuario = new System.Windows.Forms.ComboBox();
             this.Btn_filtrar = new System.Windows.Forms.Button();
             this.Dgv_gestionUsuarios = new System.Windows.Forms.DataGridView();
+            this.Pnl_agregar_usuario = new System.Windows.Forms.Panel();
+            this.label13 = new System.Windows.Forms.Label();
+            this.Btn_nuevo_usuario_guardar = new System.Windows.Forms.Button();
+            this.Cbx_nuevo_usuario_tipo = new System.Windows.Forms.ComboBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.Txb_nuevo_usuario_contraseña = new System.Windows.Forms.TextBox();
+            this.Txb_nuevo_usuario_nombre = new System.Windows.Forms.TextBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.label16 = new System.Windows.Forms.Label();
             this.Pnl_edicion_usuario = new System.Windows.Forms.Panel();
             this.label12 = new System.Windows.Forms.Label();
             this.Btn_guardar_cambios = new System.Windows.Forms.Button();
@@ -93,16 +105,6 @@
             this.label9 = new System.Windows.Forms.Label();
             this.Lbl_usuario_logeado = new System.Windows.Forms.Label();
             this.Btn_cerrarSesion = new System.Windows.Forms.Button();
-            this.Pnl_agregar_usuario = new System.Windows.Forms.Panel();
-            this.label13 = new System.Windows.Forms.Label();
-            this.Btn_nuevo_usuario_guardar = new System.Windows.Forms.Button();
-            this.Cbx_nuevo_usuario_tipo = new System.Windows.Forms.ComboBox();
-            this.label14 = new System.Windows.Forms.Label();
-            this.Txb_nuevo_usuario_contraseña = new System.Windows.Forms.TextBox();
-            this.Txb_nuevo_usuario_nombre = new System.Windows.Forms.TextBox();
-            this.label15 = new System.Windows.Forms.Label();
-            this.label16 = new System.Windows.Forms.Label();
-            this.Btn_agregar_usuario = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.Pnl_agregar_nuevo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGV_inventario)).BeginInit();
@@ -116,8 +118,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.Dgv_inventario_copia3)).BeginInit();
             this.Pnl_gestionUsuarios.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Dgv_gestionUsuarios)).BeginInit();
-            this.Pnl_edicion_usuario.SuspendLayout();
             this.Pnl_agregar_usuario.SuspendLayout();
+            this.Pnl_edicion_usuario.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -564,6 +566,8 @@
             // 
             // Pnl_gestionUsuarios
             // 
+            this.Pnl_gestionUsuarios.Controls.Add(this.Btn_eliminar_usuario);
+            this.Pnl_gestionUsuarios.Controls.Add(this.Btn_restablecer_filtros);
             this.Pnl_gestionUsuarios.Controls.Add(this.Btn_agregar_usuario);
             this.Pnl_gestionUsuarios.Controls.Add(this.Btn_editar_usuario);
             this.Pnl_gestionUsuarios.Controls.Add(this.label8);
@@ -579,9 +583,39 @@
             this.Pnl_gestionUsuarios.Size = new System.Drawing.Size(773, 422);
             this.Pnl_gestionUsuarios.TabIndex = 32;
             // 
+            // Btn_eliminar_usuario
+            // 
+            this.Btn_eliminar_usuario.Location = new System.Drawing.Point(363, 137);
+            this.Btn_eliminar_usuario.Name = "Btn_eliminar_usuario";
+            this.Btn_eliminar_usuario.Size = new System.Drawing.Size(99, 25);
+            this.Btn_eliminar_usuario.TabIndex = 46;
+            this.Btn_eliminar_usuario.Text = "Eliminar Usuario";
+            this.Btn_eliminar_usuario.UseVisualStyleBackColor = true;
+            this.Btn_eliminar_usuario.Click += new System.EventHandler(this.Btn_eliminar_usuario_Click);
+            // 
+            // Btn_restablecer_filtros
+            // 
+            this.Btn_restablecer_filtros.Location = new System.Drawing.Point(374, 19);
+            this.Btn_restablecer_filtros.Name = "Btn_restablecer_filtros";
+            this.Btn_restablecer_filtros.Size = new System.Drawing.Size(111, 23);
+            this.Btn_restablecer_filtros.TabIndex = 45;
+            this.Btn_restablecer_filtros.Text = "Restablecer filtros";
+            this.Btn_restablecer_filtros.UseVisualStyleBackColor = true;
+            this.Btn_restablecer_filtros.Click += new System.EventHandler(this.Btn_restablecer_filtros_Click);
+            // 
+            // Btn_agregar_usuario
+            // 
+            this.Btn_agregar_usuario.Location = new System.Drawing.Point(363, 282);
+            this.Btn_agregar_usuario.Name = "Btn_agregar_usuario";
+            this.Btn_agregar_usuario.Size = new System.Drawing.Size(99, 25);
+            this.Btn_agregar_usuario.TabIndex = 44;
+            this.Btn_agregar_usuario.Text = "Agregar Usuario";
+            this.Btn_agregar_usuario.UseVisualStyleBackColor = true;
+            this.Btn_agregar_usuario.Click += new System.EventHandler(this.Btn_agregar_usuario_Click);
+            // 
             // Btn_editar_usuario
             // 
-            this.Btn_editar_usuario.Location = new System.Drawing.Point(363, 64);
+            this.Btn_editar_usuario.Location = new System.Drawing.Point(363, 98);
             this.Btn_editar_usuario.Name = "Btn_editar_usuario";
             this.Btn_editar_usuario.Size = new System.Drawing.Size(99, 25);
             this.Btn_editar_usuario.TabIndex = 43;
@@ -625,15 +659,17 @@
             this.Cbx_filtro_tipo_usuario.Name = "Cbx_filtro_tipo_usuario";
             this.Cbx_filtro_tipo_usuario.Size = new System.Drawing.Size(103, 21);
             this.Cbx_filtro_tipo_usuario.TabIndex = 39;
+            this.Cbx_filtro_tipo_usuario.SelectedIndexChanged += new System.EventHandler(this.Cbx_filtro_tipo_usuario_SelectedIndexChanged);
             // 
             // Btn_filtrar
             // 
-            this.Btn_filtrar.Location = new System.Drawing.Point(315, 19);
+            this.Btn_filtrar.Location = new System.Drawing.Point(293, 19);
             this.Btn_filtrar.Name = "Btn_filtrar";
             this.Btn_filtrar.Size = new System.Drawing.Size(75, 23);
             this.Btn_filtrar.TabIndex = 38;
             this.Btn_filtrar.Text = "Filtrar";
             this.Btn_filtrar.UseVisualStyleBackColor = true;
+            this.Btn_filtrar.Click += new System.EventHandler(this.Btn_filtrar_Click_1);
             // 
             // Dgv_gestionUsuarios
             // 
@@ -647,6 +683,96 @@
             this.Dgv_gestionUsuarios.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.Dgv_gestionUsuarios.Size = new System.Drawing.Size(333, 336);
             this.Dgv_gestionUsuarios.TabIndex = 37;
+            // 
+            // Pnl_agregar_usuario
+            // 
+            this.Pnl_agregar_usuario.Controls.Add(this.label13);
+            this.Pnl_agregar_usuario.Controls.Add(this.Btn_nuevo_usuario_guardar);
+            this.Pnl_agregar_usuario.Controls.Add(this.Cbx_nuevo_usuario_tipo);
+            this.Pnl_agregar_usuario.Controls.Add(this.label14);
+            this.Pnl_agregar_usuario.Controls.Add(this.Txb_nuevo_usuario_contraseña);
+            this.Pnl_agregar_usuario.Controls.Add(this.Txb_nuevo_usuario_nombre);
+            this.Pnl_agregar_usuario.Controls.Add(this.label15);
+            this.Pnl_agregar_usuario.Controls.Add(this.label16);
+            this.Pnl_agregar_usuario.Location = new System.Drawing.Point(483, 98);
+            this.Pnl_agregar_usuario.Name = "Pnl_agregar_usuario";
+            this.Pnl_agregar_usuario.Size = new System.Drawing.Size(281, 302);
+            this.Pnl_agregar_usuario.TabIndex = 44;
+            this.Pnl_agregar_usuario.Visible = false;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label13.Location = new System.Drawing.Point(16, 8);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(252, 37);
+            this.label13.TabIndex = 14;
+            this.label13.Text = "Agregar Usuario";
+            // 
+            // Btn_nuevo_usuario_guardar
+            // 
+            this.Btn_nuevo_usuario_guardar.Location = new System.Drawing.Point(92, 264);
+            this.Btn_nuevo_usuario_guardar.Name = "Btn_nuevo_usuario_guardar";
+            this.Btn_nuevo_usuario_guardar.Size = new System.Drawing.Size(88, 35);
+            this.Btn_nuevo_usuario_guardar.TabIndex = 13;
+            this.Btn_nuevo_usuario_guardar.Text = "Guardar";
+            this.Btn_nuevo_usuario_guardar.UseVisualStyleBackColor = true;
+            this.Btn_nuevo_usuario_guardar.Click += new System.EventHandler(this.Btn_nuevo_usuario_guardar_Click);
+            // 
+            // Cbx_nuevo_usuario_tipo
+            // 
+            this.Cbx_nuevo_usuario_tipo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.Cbx_nuevo_usuario_tipo.FormattingEnabled = true;
+            this.Cbx_nuevo_usuario_tipo.Items.AddRange(new object[] {
+            "Administrador",
+            "Empleado"});
+            this.Cbx_nuevo_usuario_tipo.Location = new System.Drawing.Point(114, 199);
+            this.Cbx_nuevo_usuario_tipo.Name = "Cbx_nuevo_usuario_tipo";
+            this.Cbx_nuevo_usuario_tipo.Size = new System.Drawing.Size(159, 21);
+            this.Cbx_nuevo_usuario_tipo.TabIndex = 12;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(20, 205);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(80, 13);
+            this.label14.TabIndex = 11;
+            this.label14.Text = "Tipo de usuario";
+            // 
+            // Txb_nuevo_usuario_contraseña
+            // 
+            this.Txb_nuevo_usuario_contraseña.Location = new System.Drawing.Point(114, 147);
+            this.Txb_nuevo_usuario_contraseña.Name = "Txb_nuevo_usuario_contraseña";
+            this.Txb_nuevo_usuario_contraseña.PasswordChar = '*';
+            this.Txb_nuevo_usuario_contraseña.Size = new System.Drawing.Size(159, 20);
+            this.Txb_nuevo_usuario_contraseña.TabIndex = 10;
+            // 
+            // Txb_nuevo_usuario_nombre
+            // 
+            this.Txb_nuevo_usuario_nombre.Location = new System.Drawing.Point(114, 95);
+            this.Txb_nuevo_usuario_nombre.Name = "Txb_nuevo_usuario_nombre";
+            this.Txb_nuevo_usuario_nombre.Size = new System.Drawing.Size(159, 20);
+            this.Txb_nuevo_usuario_nombre.TabIndex = 9;
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(39, 150);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(61, 13);
+            this.label15.TabIndex = 8;
+            this.label15.Text = "Contraseña";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(8, 95);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(96, 13);
+            this.label16.TabIndex = 7;
+            this.label16.Text = "Nombre de usuario";
             // 
             // Pnl_edicion_usuario
             // 
@@ -757,105 +883,6 @@
             this.Btn_cerrarSesion.UseVisualStyleBackColor = true;
             this.Btn_cerrarSesion.Click += new System.EventHandler(this.Btn_cerrarSesion_Click);
             // 
-            // Pnl_agregar_usuario
-            // 
-            this.Pnl_agregar_usuario.Controls.Add(this.label13);
-            this.Pnl_agregar_usuario.Controls.Add(this.Btn_nuevo_usuario_guardar);
-            this.Pnl_agregar_usuario.Controls.Add(this.Cbx_nuevo_usuario_tipo);
-            this.Pnl_agregar_usuario.Controls.Add(this.label14);
-            this.Pnl_agregar_usuario.Controls.Add(this.Txb_nuevo_usuario_contraseña);
-            this.Pnl_agregar_usuario.Controls.Add(this.Txb_nuevo_usuario_nombre);
-            this.Pnl_agregar_usuario.Controls.Add(this.label15);
-            this.Pnl_agregar_usuario.Controls.Add(this.label16);
-            this.Pnl_agregar_usuario.Location = new System.Drawing.Point(483, 98);
-            this.Pnl_agregar_usuario.Name = "Pnl_agregar_usuario";
-            this.Pnl_agregar_usuario.Size = new System.Drawing.Size(281, 302);
-            this.Pnl_agregar_usuario.TabIndex = 44;
-            this.Pnl_agregar_usuario.Visible = false;
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label13.Location = new System.Drawing.Point(16, 8);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(252, 37);
-            this.label13.TabIndex = 14;
-            this.label13.Text = "Agregar Usuario";
-            // 
-            // Btn_nuevo_usuario_guardar
-            // 
-            this.Btn_nuevo_usuario_guardar.Location = new System.Drawing.Point(92, 264);
-            this.Btn_nuevo_usuario_guardar.Name = "Btn_nuevo_usuario_guardar";
-            this.Btn_nuevo_usuario_guardar.Size = new System.Drawing.Size(88, 35);
-            this.Btn_nuevo_usuario_guardar.TabIndex = 13;
-            this.Btn_nuevo_usuario_guardar.Text = "Guardar";
-            this.Btn_nuevo_usuario_guardar.UseVisualStyleBackColor = true;
-            // 
-            // Cbx_nuevo_usuario_tipo
-            // 
-            this.Cbx_nuevo_usuario_tipo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.Cbx_nuevo_usuario_tipo.FormattingEnabled = true;
-            this.Cbx_nuevo_usuario_tipo.Items.AddRange(new object[] {
-            "Administrador",
-            "Empleado"});
-            this.Cbx_nuevo_usuario_tipo.Location = new System.Drawing.Point(114, 199);
-            this.Cbx_nuevo_usuario_tipo.Name = "Cbx_nuevo_usuario_tipo";
-            this.Cbx_nuevo_usuario_tipo.Size = new System.Drawing.Size(159, 21);
-            this.Cbx_nuevo_usuario_tipo.TabIndex = 12;
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(20, 205);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(80, 13);
-            this.label14.TabIndex = 11;
-            this.label14.Text = "Tipo de usuario";
-            // 
-            // Txb_nuevo_usuario_contraseña
-            // 
-            this.Txb_nuevo_usuario_contraseña.Location = new System.Drawing.Point(114, 147);
-            this.Txb_nuevo_usuario_contraseña.Name = "Txb_nuevo_usuario_contraseña";
-            this.Txb_nuevo_usuario_contraseña.PasswordChar = '*';
-            this.Txb_nuevo_usuario_contraseña.Size = new System.Drawing.Size(159, 20);
-            this.Txb_nuevo_usuario_contraseña.TabIndex = 10;
-            // 
-            // Txb_nuevo_usuario_nombre
-            // 
-            this.Txb_nuevo_usuario_nombre.Location = new System.Drawing.Point(114, 95);
-            this.Txb_nuevo_usuario_nombre.Name = "Txb_nuevo_usuario_nombre";
-            this.Txb_nuevo_usuario_nombre.Size = new System.Drawing.Size(159, 20);
-            this.Txb_nuevo_usuario_nombre.TabIndex = 9;
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(39, 150);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(61, 13);
-            this.label15.TabIndex = 8;
-            this.label15.Text = "Contraseña";
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(8, 95);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(96, 13);
-            this.label16.TabIndex = 7;
-            this.label16.Text = "Nombre de usuario";
-            // 
-            // Btn_agregar_usuario
-            // 
-            this.Btn_agregar_usuario.Location = new System.Drawing.Point(363, 375);
-            this.Btn_agregar_usuario.Name = "Btn_agregar_usuario";
-            this.Btn_agregar_usuario.Size = new System.Drawing.Size(99, 25);
-            this.Btn_agregar_usuario.TabIndex = 44;
-            this.Btn_agregar_usuario.Text = "Agregar Usuario";
-            this.Btn_agregar_usuario.UseVisualStyleBackColor = true;
-            this.Btn_agregar_usuario.Click += new System.EventHandler(this.Btn_agregar_usuario_Click);
-            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -891,10 +918,10 @@
             this.Pnl_gestionUsuarios.ResumeLayout(false);
             this.Pnl_gestionUsuarios.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Dgv_gestionUsuarios)).EndInit();
-            this.Pnl_edicion_usuario.ResumeLayout(false);
-            this.Pnl_edicion_usuario.PerformLayout();
             this.Pnl_agregar_usuario.ResumeLayout(false);
             this.Pnl_agregar_usuario.PerformLayout();
+            this.Pnl_edicion_usuario.ResumeLayout(false);
+            this.Pnl_edicion_usuario.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -977,5 +1004,7 @@
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Button Btn_agregar_usuario;
+        private System.Windows.Forms.Button Btn_eliminar_usuario;
+        private System.Windows.Forms.Button Btn_restablecer_filtros;
     }
 }

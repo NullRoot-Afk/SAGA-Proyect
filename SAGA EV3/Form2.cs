@@ -24,6 +24,7 @@ namespace SAGA_EV3
         public Form2(string usuario, string rol)
         {
             InitializeComponent();
+            Inicializar_dgv();
             CargarDatosUsuarios();
             Cargardatos_inventario();
             this.usuario = usuario;
@@ -60,16 +61,19 @@ namespace SAGA_EV3
             Tsm_agregar.Checked = true;
             Tsm_agregar_existente.Checked = true;
         }
-        private void CargarDatosUsuarios()
-        {   //inicio de seccion redundante(separar en un metodo unico)
-            //Code to load data into the DataGridView
+        private void Inicializar_dgv()
+        {
             if (!File.Exists("Users.TXT")) return;
-            dt_usuarios.Clear();
-            dt_usuarios.Columns.Add("Nombre de Usuario", typeof(string));
-            dt_usuarios.Columns.Add("Tipo de usuario", typeof(string));
-            dt_usuarios.Columns.Add("Fecha de creacion", typeof(string));
+                dt_usuarios.Columns.Add("Nombre de Usuario", typeof(string));
+                dt_usuarios.Columns.Add("Tipo de usuario", typeof(string));
+                dt_usuarios.Columns.Add("Fecha de creacion", typeof(string));
+        }
+        private void CargarDatosUsuarios()
+        {
             try
             {
+                usuarios.Clear();
+                dt_usuarios.Clear();
                 string[] lines = File.ReadAllLines("Users.TXT");
                 for (int i = 0; i < lines.Length; i++)
                 {
@@ -134,9 +138,6 @@ namespace SAGA_EV3
             CBX_eliminacion.ValueMember = "Nombre";
             CBX_eliminacion.SelectedIndex = -1;
             CBX_eliminacion.DropDownStyle = ComboBoxStyle.DropDownList;
-            Cbx_filtro_tipo_usuario.DataSource = dt_usuarios.DefaultView.ToTable(true, "Tipo de usuario");
-            Cbx_filtro_tipo_usuario.DisplayMember = "Tipo de usuario";
-            Cbx_filtro_tipo_usuario.ValueMember = "Tipo de usuario";
         }
         private void Btn_Agregar_prod_nuevo_Click(object sender, EventArgs e)
         {
@@ -320,19 +321,7 @@ namespace SAGA_EV3
 
         private void Btn_filtrar_Click(object sender, EventArgs e)
         {
-            string filtro_tipo = Cbx_filtro_tipo_usuario.SelectedValue.ToString();
-            string filtro_nombre = Txb_filtro_nombre_usuario.Text.Trim();
-            DataView dv = dt_usuarios.DefaultView;
-            try
-            {
-                dv.RowFilter = $"[Tipo de usuario] LIKE '%{filtro_tipo}%' AND [Nombre de Usuario] LIKE '%{filtro_nombre}%'";
-                Dgv_gestionUsuarios.DataSource = dv.ToTable();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error al aplicar filtro: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
+
 
 
         }
@@ -466,6 +455,52 @@ namespace SAGA_EV3
         {
             Pnl_agregar_usuario.Visible = true;
             Pnl_edicion_usuario.Visible = false;
+        }
+
+        private void Btn_nuevo_usuario_guardar_Click(object sender, EventArgs e)
+        {
+            usuarios.Add(new Usuario(Txb_nuevo_usuario_nombre.Text,Argon2Hasher.HashPassword(Txb_nuevo_usuario_contraseña.Text).ToString(), Cbx_nuevo_usuario_tipo.SelectedItem.ToString(), DateTime.Now.ToString()));
+            Guardar_cambios_usuario();
+            CargarDatosUsuarios();
+        }
+
+        private void Cbx_filtro_tipo_usuario_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Btn_filtrar_Click_1(object sender, EventArgs e)
+        {
+            string filtro_tipo = Cbx_filtro_tipo_usuario.SelectedItem.ToString();
+            string filtro_nombre = Txb_filtro_nombre_usuario.Text.Trim();
+            DataView dv = dt_usuarios.DefaultView;
+            try
+            {
+                dv.RowFilter = $"[Tipo de usuario] LIKE '%{filtro_tipo}%' AND [Nombre de Usuario] LIKE '%{filtro_nombre}%'";
+                Dgv_gestionUsuarios.DataSource = dv.ToTable();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al aplicar filtro: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+        }
+
+        private void Btn_eliminar_usuario_Click(object sender, EventArgs e)
+        {
+            if (Dgv_gestionUsuarios.SelectedRows.Count == 0) return;
+            string seleccionado = Dgv_gestionUsuarios.SelectedRows[0].Cells["Nombre de Usuario"].Value.ToString();
+            usuarios.RemoveAll(u => string.Equals(u.GetNombre(), seleccionado, StringComparison.OrdinalIgnoreCase));
+            Guardar_cambios_usuario();
+            CargarDatosUsuarios();
+        }
+
+        private void Btn_restablecer_filtros_Click(object sender, EventArgs e)
+        {
+            DataView dv = dt_usuarios.DefaultView;
+            dv.RowFilter = "";
+            Dgv_gestionUsuarios.DataSource = dv.ToTable();
         }
     }
 }
