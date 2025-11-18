@@ -17,8 +17,9 @@ namespace SAGA_EV3
 {
     public partial class Form2 : Form
     {
-        DataTable dt = new DataTable();
+        DataTable dt_inventario = new DataTable();
         DataTable dt_usuarios = new DataTable();
+        DataTable dt_empleados = new DataTable();
         List<Usuario> usuarios = new List<Usuario>();
         string usuario;
         string rol;
@@ -49,6 +50,7 @@ namespace SAGA_EV3
             PNL_eliminacion_producto.Visible = false;
             PNL_eliminacion_cantidad.Visible = false;
             Pnl_gestionUsuarios.Visible = false;
+            Pnl_gestion_empleados.Visible = false;
             //Adjusting checks
             Tsm_agregar_existente.Checked = false;
             Tsm_agregar.Checked = true;
@@ -66,6 +68,7 @@ namespace SAGA_EV3
             PNL_eliminacion_producto.Visible = false;
             PNL_eliminacion_cantidad.Visible = false;
             Pnl_gestionUsuarios.Visible = false;
+            Pnl_gestion_empleados.Visible = false;
             //Adjusting checks
             Tsm_nuevo_prod.Checked = false;
             Tsm_Eliminar.Checked = false;
@@ -77,9 +80,46 @@ namespace SAGA_EV3
         private void Inicializar_dgv()
         {
             if (!File.Exists("Users.TXT")) return;
-                dt_usuarios.Columns.Add("Nombre de Usuario", typeof(string));
-                dt_usuarios.Columns.Add("Tipo de Usuario", typeof(string));
-                dt_usuarios.Columns.Add("Fecha de Creacion", typeof(string));
+            dt_usuarios.Columns.Add("Nombre de Usuario", typeof(string));
+            dt_usuarios.Columns.Add("Tipo de Usuario", typeof(string));
+            dt_usuarios.Columns.Add("Fecha de Creacion", typeof(string));
+
+        }
+        private void CargarDatosEmpleados()
+        {
+            if (File.Exists("Empleados.txt"))
+            {
+                try
+                {
+                    if (dt_empleados.Columns.Count != 4) 
+                    {
+                        dt_empleados.Clear();
+                        dt_empleados.Columns.Add("Nombre", typeof(string));
+                        dt_empleados.Columns.Add("Cargo", typeof(string));
+                        dt_empleados.Columns.Add("Edad", typeof(string));
+                        dt_empleados.Columns.Add("Fecha", typeof(string));
+                    }
+                    string[] lineas_empleados = File.ReadAllLines("Empleados.txt");
+                    foreach (string Empleado in lineas_empleados)
+                    {
+                        string[] partes = Empleado.Split(';');
+                        if (partes.Length != 4) 
+                        {
+                            MessageBox.Show("Los datos de un usuario no estan completos");
+                            continue;
+                        }
+                        else
+                        {
+                            dt_empleados.Rows.Add(partes);
+                        }
+                    }
+                    Dgv_empleados.DataSource = dt_empleados;
+                }
+                catch (Exception ex)
+                {
+
+                }
+            }
         }
         private void CargarDatosUsuarios()
         {
@@ -109,11 +149,11 @@ namespace SAGA_EV3
         {   //inicio de seccion redundante(separar en un metodo unico para reutilizar codigo)
             //Code to load data into the DataGridView
             if (!File.Exists("Inventario.TXT")) return;
-            dt.Clear();
-            dt.Columns.Clear();
-            dt.Columns.Add("Nombre", typeof(string));
-            dt.Columns.Add("Cantidad", typeof(int));
-            dt.Columns.Add("Tipo", typeof(string));
+            dt_inventario.Clear();
+            dt_inventario.Columns.Clear();
+            dt_inventario.Columns.Add("Nombre", typeof(string));
+            dt_inventario.Columns.Add("Cantidad", typeof(int));
+            dt_inventario.Columns.Add("Tipo", typeof(string));
             try
             {
                 string[] lines = File.ReadAllLines("Inventario.TXT");
@@ -122,7 +162,7 @@ namespace SAGA_EV3
                     string[] parts = lines[i].Split(';');
                     if (parts.Length == 3)
                     {
-                        dt.Rows.Add(parts[0], int.Parse(parts[1]), parts[2]);
+                        dt_inventario.Rows.Add(parts[0], int.Parse(parts[1]), parts[2]);
                     }
                 }
             }
@@ -132,21 +172,21 @@ namespace SAGA_EV3
             }
             //fin de seccion redundante
             // Assigning DataTable to DataGridView and ComboBox
-            DGV_inventario.DataSource = dt;
-            Dgv_inventario_copia1.DataSource = dt;
-            Dgv_inventario_copia2.DataSource = dt;
-            Dgv_inventario_copia3.DataSource = dt;
-            CBX_producto_eliminacion.DataSource = dt;
+            DGV_inventario.DataSource = dt_inventario;
+            Dgv_inventario_copia1.DataSource = dt_inventario;
+            Dgv_inventario_copia2.DataSource = dt_inventario;
+            Dgv_inventario_copia3.DataSource = dt_inventario;
+            CBX_producto_eliminacion.DataSource = dt_inventario;
             CBX_producto_eliminacion.DisplayMember = "Nombre";
             CBX_producto_eliminacion.ValueMember = "Nombre";
             CBX_producto_eliminacion.SelectedIndex = -1;
             CBX_producto_eliminacion.DropDownStyle = ComboBoxStyle.DropDownList;
-            CBX_existencia.DataSource = dt;
+            CBX_existencia.DataSource = dt_inventario;
             CBX_existencia.DisplayMember = "Nombre";
             CBX_existencia.ValueMember = "Nombre";
             CBX_existencia.SelectedIndex = -1;
             CBX_existencia.DropDownStyle = ComboBoxStyle.DropDownList;
-            CBX_eliminacion.DataSource = dt;
+            CBX_eliminacion.DataSource = dt_inventario;
             CBX_eliminacion.DisplayMember = "Nombre";
             CBX_eliminacion.ValueMember = "Nombre";
             CBX_eliminacion.SelectedIndex = -1;
@@ -185,7 +225,7 @@ namespace SAGA_EV3
         }
         private bool Existe_producto(string nombre)
         {
-            foreach (DataRow row in dt.Rows)
+            foreach (DataRow row in dt_inventario.Rows)
             {
                 if (row["Nombre"].ToString().Equals(nombre, StringComparison.OrdinalIgnoreCase))
                 {
@@ -202,7 +242,7 @@ namespace SAGA_EV3
                 MessageBox.Show("Debe seleccionar un producto para agregar o restar existencias", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
-            DataRow[] fila_objetivo = dt.Select($"Nombre = '{seleccion.SelectedValue.ToString()}'");
+            DataRow[] fila_objetivo = dt_inventario.Select($"Nombre = '{seleccion.SelectedValue.ToString()}'");
             int cantidad_actual = int.Parse(fila_objetivo[0]["Cantidad"].ToString());
             if (tipo_operacion == "resta")
             {
@@ -243,16 +283,16 @@ namespace SAGA_EV3
             var sb = new StringBuilder();
 
             // Construir todo el contenido nuevo en memoria (sin el producto a eliminar)
-            for (int i = 0; i < dt.Rows.Count; i++)
+            for (int i = 0; i < dt_inventario.Rows.Count; i++)
             {
-                var nombreObj = dt.Rows[i]["Nombre"];
+                var nombreObj = dt_inventario.Rows[i]["Nombre"];
                 if (nombreObj == null || nombreObj == DBNull.Value) continue;
 
                 string nombre = nombreObj.ToString();
                 //Transferir solo los que no coinciden con el seleccionado
                 if (!string.Equals(nombre, seleccionado, StringComparison.Ordinal))
                 {
-                    sb.AppendFormat("{0};{1};{2}\n", dt.Rows[i]["Nombre"], dt.Rows[i]["Cantidad"], dt.Rows[i]["Tipo"]);
+                    sb.AppendFormat("{0};{1};{2}\n", dt_inventario.Rows[i]["Nombre"], dt_inventario.Rows[i]["Cantidad"], dt_inventario.Rows[i]["Tipo"]);
                 }
             }
             File.WriteAllText("Inventario.TXT", sb.ToString());
@@ -262,7 +302,7 @@ namespace SAGA_EV3
         }
         private void BTN_eliminar_cantidad_Click(object sender, EventArgs e)
         {
-            if (Validar_modificacion_productos(CBX_eliminacion, TXB_Eliminacion_cantidad,"resta"))
+            if (Validar_modificacion_productos(CBX_eliminacion, TXB_Eliminacion_cantidad, "resta"))
             {
                 if (CBX_eliminacion.SelectedIndex == -1 || TXB_Eliminacion_cantidad.Text == "")
                 {
@@ -274,28 +314,28 @@ namespace SAGA_EV3
                 var sb = new StringBuilder();
 
                 // Construir todo el contenido nuevo en memoria (sin el producto a modificar)
-                for (int i = 0; i < dt.Rows.Count; i++)
+                for (int i = 0; i < dt_inventario.Rows.Count; i++)
                 {
-                    var nombreObj = dt.Rows[i]["Nombre"];
+                    var nombreObj = dt_inventario.Rows[i]["Nombre"];
                     if (nombreObj == null || nombreObj == DBNull.Value) continue;
 
                     string nombre = nombreObj.ToString();
                     //Transferir solo los que no coinciden con el seleccionado
                     if (!string.Equals(nombre, seleccionado, StringComparison.Ordinal))
                     {
-                        sb.AppendFormat("{0};{1};{2}\n", dt.Rows[i]["Nombre"], dt.Rows[i]["Cantidad"], dt.Rows[i]["Tipo"]);
+                        sb.AppendFormat("{0};{1};{2}\n", dt_inventario.Rows[i]["Nombre"], dt_inventario.Rows[i]["Cantidad"], dt_inventario.Rows[i]["Tipo"]);
                     }
                     else
                     {
-                        int nueva_cantidad = int.Parse(dt.Rows[i]["Cantidad"].ToString()) - int.Parse(TXB_Eliminacion_cantidad.Text);
-                        sb.AppendFormat("{0};{1};{2}\n", dt.Rows[i]["Nombre"], nueva_cantidad, dt.Rows[i]["Tipo"]);
+                        int nueva_cantidad = int.Parse(dt_inventario.Rows[i]["Cantidad"].ToString()) - int.Parse(TXB_Eliminacion_cantidad.Text);
+                        sb.AppendFormat("{0};{1};{2}\n", dt_inventario.Rows[i]["Nombre"], nueva_cantidad, dt_inventario.Rows[i]["Tipo"]);
                     }
                 }
-                    File.WriteAllText("Inventario.TXT", sb.ToString());
-                    MessageBox.Show("Existencias eliminadas exitosamente", "Exito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    Cargardatos_inventario();
-                    CBX_eliminacion.SelectedIndex = -1;
-                    TXB_Eliminacion_cantidad.Text = "";
+                File.WriteAllText("Inventario.TXT", sb.ToString());
+                MessageBox.Show("Existencias eliminadas exitosamente", "Exito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                Cargardatos_inventario();
+                CBX_eliminacion.SelectedIndex = -1;
+                TXB_Eliminacion_cantidad.Text = "";
             }
         }
         private void TSM_eliminar_producto_Click(object sender, EventArgs e)
@@ -305,6 +345,7 @@ namespace SAGA_EV3
             Pnl_agregar_existente.Visible = false;
             Pnl_agregar_nuevo.Visible = false;
             Pnl_gestionUsuarios.Visible = false;
+            Pnl_gestion_empleados.Visible = false;
 
             TSM_eliminar_producto.Checked = true;
             Tsm_Eliminar.Checked = true;
@@ -321,6 +362,7 @@ namespace SAGA_EV3
             Pnl_agregar_existente.Visible = false;
             Pnl_agregar_nuevo.Visible = false;
             Pnl_gestionUsuarios.Visible = false;
+            Pnl_gestion_empleados.Visible = false;
 
             Tsm_Eliminar.Checked = true;
             TSM_eliminar_existencias.Checked = true;
@@ -343,6 +385,7 @@ namespace SAGA_EV3
             Pnl_agregar_nuevo.Visible = false;
             PNL_eliminacion_cantidad.Visible = false;
             PNL_eliminacion_producto.Visible = false;
+            Pnl_gestion_empleados.Visible=false;    
         }
         private void Btn_cerrarSesion_Click(object sender, EventArgs e)
         {
@@ -376,7 +419,7 @@ namespace SAGA_EV3
 
         private void BTN_agregar_existencias_Click_1(object sender, EventArgs e)
         {
-            if (Validar_modificacion_productos(CBX_existencia, TXB_agregar_cantidad_existencia,"suma"))
+            if (Validar_modificacion_productos(CBX_existencia, TXB_agregar_cantidad_existencia, "suma"))
             {
                 if (CBX_existencia.SelectedIndex == -1 || TXB_agregar_cantidad_existencia.Text == "")
                 {
@@ -388,28 +431,28 @@ namespace SAGA_EV3
                 var sb = new StringBuilder();
 
                 // Construir todo el contenido nuevo en memoria (sin el producto a modificar)
-                for (int i = 0; i < dt.Rows.Count; i++)
+                for (int i = 0; i < dt_inventario.Rows.Count; i++)
                 {
-                    var nombreObj = dt.Rows[i]["Nombre"];
+                    var nombreObj = dt_inventario.Rows[i]["Nombre"];
                     if (nombreObj == null || nombreObj == DBNull.Value) continue;
 
                     string nombre = nombreObj.ToString();
                     //Transferir solo los que no coinciden con el seleccionado
                     if (!string.Equals(nombre, seleccionado, StringComparison.Ordinal))
                     {
-                        sb.AppendFormat("{0};{1};{2}\n", dt.Rows[i]["Nombre"], dt.Rows[i]["Cantidad"], dt.Rows[i]["Tipo"]);
+                        sb.AppendFormat("{0};{1};{2}\n", dt_inventario.Rows[i]["Nombre"], dt_inventario.Rows[i]["Cantidad"], dt_inventario.Rows[i]["Tipo"]);
                     }
                     else
                     {
-                        int nueva_cantidad = int.Parse(dt.Rows[i]["Cantidad"].ToString()) + int.Parse(TXB_agregar_cantidad_existencia.Text);
-                        sb.AppendFormat("{0};{1};{2}\n", dt.Rows[i]["Nombre"], nueva_cantidad, dt.Rows[i]["Tipo"]);
+                        int nueva_cantidad = int.Parse(dt_inventario.Rows[i]["Cantidad"].ToString()) + int.Parse(TXB_agregar_cantidad_existencia.Text);
+                        sb.AppendFormat("{0};{1};{2}\n", dt_inventario.Rows[i]["Nombre"], nueva_cantidad, dt_inventario.Rows[i]["Tipo"]);
                     }
                 }
-                    File.WriteAllText("Inventario.TXT", sb.ToString());
-                    MessageBox.Show("Existencias agregadas exitosamente", "Exito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    Cargardatos_inventario();
+                File.WriteAllText("Inventario.TXT", sb.ToString());
+                MessageBox.Show("Existencias agregadas exitosamente", "Exito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                Cargardatos_inventario();
                 TXB_agregar_cantidad_existencia.Text = string.Empty;
-                    
+
             }
         }
         string usuario_seleccionado;
@@ -459,7 +502,7 @@ namespace SAGA_EV3
                     user._Rol = Cbx_modificar_tipo_usuario.SelectedItem.ToString();
                     if (Tbx_modificar_contraseña.Text.Trim() != "")
                     {
-                        if(Tbx_modificar_contraseña.Text.Length >= 8)
+                        if (Tbx_modificar_contraseña.Text.Length >= 8)
                         {
                             user.establecer_contraseña(Tbx_modificar_contraseña.Text.Trim());
                         }
@@ -492,14 +535,9 @@ namespace SAGA_EV3
 
         private void Btn_nuevo_usuario_guardar_Click(object sender, EventArgs e)
         {
-            usuarios.Add(new Usuario(Txb_nuevo_usuario_nombre.Text,Argon2Hasher.HashPassword(Txb_nuevo_usuario_contraseña.Text).ToString(), Cbx_nuevo_usuario_tipo.SelectedItem.ToString(), DateTime.Now.ToString()));
+            usuarios.Add(new Usuario(Txb_nuevo_usuario_nombre.Text, Argon2Hasher.HashPassword(Txb_nuevo_usuario_contraseña.Text).ToString(), Cbx_nuevo_usuario_tipo.SelectedItem.ToString(), DateTime.Now.ToString()));
             Guardar_cambios_usuario();
             CargarDatosUsuarios();
-        }
-
-        private void Cbx_filtro_tipo_usuario_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
         }
 
         private void Btn_filtrar_Click_1(object sender, EventArgs e)
@@ -514,12 +552,13 @@ namespace SAGA_EV3
                     Dgv_gestionUsuarios.DataSource = dv.ToTable();
 
                 }
-                catch (Exception ex) {
+                catch (Exception ex)
+                {
                     MessageBox.Show("Error al aplicar filtro: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
             }
-            else if (Txb_filtro_nombre_usuario.Text.Trim()  != "" && Cbx_filtro_tipo_usuario.SelectedIndex == -1)
+            else if (Txb_filtro_nombre_usuario.Text.Trim() != "" && Cbx_filtro_tipo_usuario.SelectedIndex == -1)
             {
                 try
                 {
@@ -544,7 +583,7 @@ namespace SAGA_EV3
                     dv.RowFilter = $"[Nombre de Usuario] LIKE '%{filtro_nombre}%' AND [Tipo de Usuario] LIKE '%{filtro_tipo}%'";
                     Dgv_gestionUsuarios.DataSource = dv.ToTable();
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     MessageBox.Show("Error al aplicar filtro: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
@@ -552,7 +591,7 @@ namespace SAGA_EV3
             }
             else
             {
-                MessageBox.Show("Primero debe establecer los criterios de busqueda","Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Primero debe establecer los criterios de busqueda", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
             }
         }
@@ -573,7 +612,90 @@ namespace SAGA_EV3
             Dgv_gestionUsuarios.DataSource = dv.ToTable();
             Txb_filtro_nombre_usuario.Text = string.Empty;
         }
+
+        private void Tsm_gestion_empleados_Click(object sender, EventArgs e)
+        {
+            Pnl_agregar_existente.Visible = false;
+            Pnl_agregar_nuevo.Visible = false;
+            PNL_eliminacion_cantidad.Visible = false;
+            PNL_eliminacion_producto.Visible = false;
+            Pnl_gestionUsuarios.Visible = false; 
+            Pnl_gestion_empleados.Visible = true;
+            CargarDatosEmpleados();
+        }
+
+        private void Txb_fecha_ingreso_editar_Enter(object sender, EventArgs e)
+        {
+            Txb_agregar_empleado.Text = string.Empty;
+        }
+
+        private void Txb_fecha_ingreso_editar_Leave(object sender, EventArgs e)
+        {
+            Txb_fecha_ingreso_editar.Text = "DD/MM/YY";
+        }
+
+        private void Pnl_gestionUsuarios_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void Btn_filtar_empleados_Click(object sender, EventArgs e)
+        {
+            if (Txb_nombre_empleado_filtro.Text.Trim() == "" && Cbx_tipo_empleado_filtro.SelectedIndex != -1)
+            {
+                try
+                {
+                    string filtro_tipo = Cbx_tipo_empleado_filtro.SelectedItem.ToString();
+                    DataView dv = dt_empleados.DefaultView;
+                    dv.RowFilter = $"[Cargo] LIKE '%{filtro_tipo}%'";
+                    Dgv_empleados.DataSource = dv.ToTable();
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error al aplicar filtro: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+            }
+            else if (Txb_nombre_empleado_filtro.Text.Trim() != "" && Cbx_tipo_empleado_filtro.SelectedIndex == -1)
+            {
+                try
+                {
+                    string filtro_nombre = Txb_nombre_empleado_filtro.Text.Trim();
+                    DataView dv = dt_empleados.DefaultView;
+                    dv.RowFilter = $"[Nombre] LIKE '%{filtro_nombre}%'";
+                    Dgv_empleados.DataSource = dv.ToTable();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error al aplicar filtro: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+            }
+            else if (Txb_nombre_empleado_filtro.Text.Trim() != "" && Cbx_tipo_empleado_filtro.SelectedIndex != -1)
+            {
+                try
+                {
+                    string filtro_tipo = Cbx_tipo_empleado_filtro.SelectedItem.ToString();
+                    string filtro_nombre = Txb_nombre_empleado_filtro.Text.Trim();
+                    DataView dv = dt_empleados.DefaultView;
+                    dv.RowFilter = $"[Nombre] LIKE '%{filtro_nombre}%' AND [Cargo] LIKE '%{filtro_tipo}%'";
+                    Dgv_empleados.DataSource = dv.ToTable();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error al aplicar filtro: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Primero debe establecer los criterios de busqueda", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+            }
+
+        }
     }
 }
+
 
 

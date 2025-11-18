@@ -32,7 +32,7 @@ namespace SAGA_EV3
                 }
 
             }
-            Txb_hash.Text = Argon2Hasher.HashPassword("admin");
+            //Txb_hash.Text = Argon2Hasher.HashPassword("admin");
 
         }
 
@@ -75,6 +75,11 @@ namespace SAGA_EV3
 
                 }
             }
+        }
+
+        private void Txb_user_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

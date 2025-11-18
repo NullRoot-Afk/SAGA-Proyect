@@ -35,8 +35,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.Btn_Login = new System.Windows.Forms.Button();
-            this.lbl_hash = new System.Windows.Forms.Label();
-            this.Txb_hash = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -46,6 +44,7 @@
             this.Txb_user.Name = "Txb_user";
             this.Txb_user.Size = new System.Drawing.Size(123, 20);
             this.Txb_user.TabIndex = 2;
+            this.Txb_user.TextChanged += new System.EventHandler(this.Txb_user_TextChanged);
             // 
             // Txb_password
             // 
@@ -99,22 +98,6 @@
             this.Btn_Login.UseVisualStyleBackColor = true;
             this.Btn_Login.Click += new System.EventHandler(this.Btn_Login_Click);
             // 
-            // lbl_hash
-            // 
-            this.lbl_hash.AutoSize = true;
-            this.lbl_hash.Location = new System.Drawing.Point(31, 266);
-            this.lbl_hash.Name = "lbl_hash";
-            this.lbl_hash.Size = new System.Drawing.Size(35, 13);
-            this.lbl_hash.TabIndex = 8;
-            this.lbl_hash.Text = "label1";
-            // 
-            // Txb_hash
-            // 
-            this.Txb_hash.Location = new System.Drawing.Point(12, 282);
-            this.Txb_hash.Name = "Txb_hash";
-            this.Txb_hash.Size = new System.Drawing.Size(568, 20);
-            this.Txb_hash.TabIndex = 9;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -122,8 +105,6 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(584, 561);
-            this.Controls.Add(this.Txb_hash);
-            this.Controls.Add(this.lbl_hash);
             this.Controls.Add(this.Btn_Login);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.label3);
@@ -145,8 +126,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Button Btn_Login;
-        private System.Windows.Forms.Label lbl_hash;
-        private System.Windows.Forms.TextBox Txb_hash;
     }
 }
 
