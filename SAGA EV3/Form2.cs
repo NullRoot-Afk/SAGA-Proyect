@@ -17,12 +17,14 @@ namespace SAGA_EV3
 {
     public partial class Form2 : Form
     {
-        DataTable dt_inventario = new DataTable();
-        DataTable dt_usuarios = new DataTable();
-        DataTable dt_empleados = new DataTable();
-        List<Usuario> usuarios = new List<Usuario>();
-        string usuario;
-        string rol;
+        private DataTable dt_inventario = new DataTable();
+        private DataTable dt_usuarios = new DataTable();
+        private DataTable dt_empleados = new DataTable();
+        private List<Usuario> usuarios = new List<Usuario>();
+        private string usuario;
+        private string rol;
+        private bool agregar = false;
+
         public Form2(string usuario, string rol)
         {
             InitializeComponent();
@@ -613,86 +615,130 @@ namespace SAGA_EV3
             Txb_filtro_nombre_usuario.Text = string.Empty;
         }
 
-        private void Tsm_gestion_empleados_Click(object sender, EventArgs e)
+        private void Form2_Load(object sender, EventArgs e)
         {
-            Pnl_agregar_existente.Visible = false;
-            Pnl_agregar_nuevo.Visible = false;
-            PNL_eliminacion_cantidad.Visible = false;
-            PNL_eliminacion_producto.Visible = false;
-            Pnl_gestionUsuarios.Visible = false; 
-            Pnl_gestion_empleados.Visible = true;
             CargarDatosEmpleados();
         }
 
-        private void Txb_fecha_ingreso_editar_Enter(object sender, EventArgs e)
+        private void btn_restablecer_filtros_empleado_Click(object sender, EventArgs e)
         {
-            Txb_agregar_empleado.Text = string.Empty;
-        }
-
-        private void Txb_fecha_ingreso_editar_Leave(object sender, EventArgs e)
-        {
-            Txb_fecha_ingreso_editar.Text = "DD/MM/YY";
-        }
-
-        private void Pnl_gestionUsuarios_Paint(object sender, PaintEventArgs e)
-        {
+            Cbx_tipo_empleado_filtro.SelectedIndex = -1;
+            DataView dv = dt_empleados.DefaultView;
+            dv.RowFilter = "";
+            Dgv_empleados.DataSource = dv.ToTable();
+            Txb_nombre_empleado_filtro.Text = string.Empty;
 
         }
-
-        private void Btn_filtar_empleados_Click(object sender, EventArgs e)
+        private (string nombre,string edad, string cargo ,DateTime fecha) Obtener_datos_perfil()
         {
-            if (Txb_nombre_empleado_filtro.Text.Trim() == "" && Cbx_tipo_empleado_filtro.SelectedIndex != -1)
-            {
-                try
-                {
-                    string filtro_tipo = Cbx_tipo_empleado_filtro.SelectedItem.ToString();
-                    DataView dv = dt_empleados.DefaultView;
-                    dv.RowFilter = $"[Cargo] LIKE '%{filtro_tipo}%'";
-                    Dgv_empleados.DataSource = dv.ToTable();
+            string selected_profile_age = Dgv_empleados.SelectedRows[0].Cells["Edad"].Value.ToString();
+            string selected_profile_name = Dgv_empleados.SelectedRows[0].Cells["Nombre"].Value.ToString();
+            string selected_profile_cargo = Dgv_empleados.SelectedRows[0].Cells["Cargo"].Value.ToString();
+            DateTime fecha_ingreso = DateTime.Parse(Dgv_empleados.SelectedRows[0].Cells["Fecha"].Value.ToString());
+            return (selected_profile_name, selected_profile_age, selected_profile_cargo, fecha_ingreso);
 
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error al aplicar filtro: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-            }
-            else if (Txb_nombre_empleado_filtro.Text.Trim() != "" && Cbx_tipo_empleado_filtro.SelectedIndex == -1)
-            {
-                try
-                {
-                    string filtro_nombre = Txb_nombre_empleado_filtro.Text.Trim();
-                    DataView dv = dt_empleados.DefaultView;
-                    dv.RowFilter = $"[Nombre] LIKE '%{filtro_nombre}%'";
-                    Dgv_empleados.DataSource = dv.ToTable();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error al aplicar filtro: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-            }
-            else if (Txb_nombre_empleado_filtro.Text.Trim() != "" && Cbx_tipo_empleado_filtro.SelectedIndex != -1)
-            {
-                try
-                {
-                    string filtro_tipo = Cbx_tipo_empleado_filtro.SelectedItem.ToString();
-                    string filtro_nombre = Txb_nombre_empleado_filtro.Text.Trim();
-                    DataView dv = dt_empleados.DefaultView;
-                    dv.RowFilter = $"[Nombre] LIKE '%{filtro_nombre}%' AND [Cargo] LIKE '%{filtro_tipo}%'";
-                    Dgv_empleados.DataSource = dv.ToTable();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error al aplicar filtro: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-            else
-            {
-                MessageBox.Show("Primero debe establecer los criterios de busqueda", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
 
+        private void Btn_editar_empleado_Click(object sender, EventArgs e)
+        {
+            var (profile_name,profile_age,profile_cargo,profile_fecha) = Obtener_datos_perfil();
+            
+            agregar = false;
+            Lbl_panel_empleados.Text = "Panel de edicion";
+            Pnl_edicion_empleado.Visible = true;
+            Txb_nombre_empleado.Text = profile_name ;
+            Txb_edad_empleado.Text = profile_age;
+            Dtp_ingreso_empleado.Value = profile_fecha;
+            switch (profile_cargo)
+            {
+                case "Gerente":
+                    Cbx_tipo_empleado.SelectedIndex = 0;
+                    break;
+                case "Cuidador":
+                    Cbx_tipo_empleado.SelectedIndex = 1;
+                    break;
+                default:
+                    Cbx_tipo_empleado.SelectedIndex = 2;
+                    break;
             }
+        }
+        private (bool ok, string nombre, string cargo, string edad, DateTime fecha) Obtener_datos_nuevos()
+        {
+            try
+            {
+                string nombre = Txb_nombre_empleado.Text;
+                string edad = Txb_edad_empleado.Text;
+                string cargo = Cbx_tipo_empleado.SelectedItem.ToString();
+                DateTime fecha = Dtp_ingreso_empleado.Value;
+               
+                return (true, nombre, cargo,edad, fecha);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("algo paso en el metodo");
+                return (false,"","","",DateTime.MinValue);
+            }
+        }
+        private void Btn_agregar_empleado_Click(object sender, EventArgs e)
+        {
+            
 
+            agregar = true;
+            Lbl_panel_empleados.Text = "Añadir empleado";
+            Pnl_edicion_empleado.Visible = true;
+            Limpiar_datos_empleado();
+        }
+        private bool Actualizar_documento()
+        {
+            try
+            {
+                var (ok, profile_name, profile_cargo, profile_age, profile_fecha) = Obtener_datos_nuevos();
+                if (ok)
+                {
+                    StringBuilder sb = new StringBuilder();
+                    sb.AppendFormat("{0};{1};{2};{3}", profile_name, profile_cargo, profile_age, profile_fecha.ToString("dd-MM-yyyy"));
+                    using (StreamWriter empleados = new StreamWriter("Empleados.txt", true))
+                    {
+                        empleados.WriteLine(sb);
+                    }
+                    return true;
+                }
+                else
+                {
+                    MessageBox.Show("ocurrio un error");
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("hiciste algo mal"+ ex);
+                return false;
+            }
+        }
+        private void Dgv_empleados_Leave(object sender, EventArgs e)
+        {
+        }
+        private void Limpiar_datos_empleado()
+        {
+            Txb_edad_empleado.Text = string.Empty;
+            Txb_nombre_empleado.Text = string.Empty;
+            Cbx_tipo_empleado.SelectedIndex = -1;
+            Dtp_ingreso_empleado.Value = DateTime.Now;
+        }
+
+        private void Btn_guardar_cambios_empleados_Click(object sender, EventArgs e)
+        {
+            //cambiamos comportamineto dependiendo de la operacion realizada
+            switch (agregar){
+                case true:
+                    Actualizar_documento();
+                    MessageBox.Show("El boton ejecuto el algoritmo para agregar empleado nuevo");
+                    break;
+                case false:
+                    MessageBox.Show("El boton ejecuto el algoritmo para editar empleado");
+                    break;
+            }
+            Limpiar_datos_empleado();
         }
     }
 }
