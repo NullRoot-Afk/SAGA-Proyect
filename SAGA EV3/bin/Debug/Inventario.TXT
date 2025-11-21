@@ -1,3 +1,2 @@
-adsda;0;Medicamentos
-asdas;19;Alimentos
-dasdas;0;Alimentos
+asdas;0;Alimentos
+adsd;24;Alimentos

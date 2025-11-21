@@ -12,6 +12,7 @@ using System.Xml;
 using System.Configuration;
 using System.Runtime.InteropServices;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 
 namespace SAGA_EV3
 {
@@ -24,6 +25,7 @@ namespace SAGA_EV3
         private string usuario;
         private string rol;
         private bool agregar = false;
+        private string perfil_editado;
 
         public Form2(string usuario, string rol)
         {
@@ -89,13 +91,14 @@ namespace SAGA_EV3
         }
         private void CargarDatosEmpleados()
         {
+            dt_empleados.Clear();
             if (File.Exists("Empleados.txt"))
             {
                 try
                 {
                     if (dt_empleados.Columns.Count != 4) 
                     {
-                        dt_empleados.Clear();
+                        
                         dt_empleados.Columns.Add("Nombre", typeof(string));
                         dt_empleados.Columns.Add("Cargo", typeof(string));
                         dt_empleados.Columns.Add("Edad", typeof(string));
@@ -537,9 +540,36 @@ namespace SAGA_EV3
 
         private void Btn_nuevo_usuario_guardar_Click(object sender, EventArgs e)
         {
-            usuarios.Add(new Usuario(Txb_nuevo_usuario_nombre.Text, Argon2Hasher.HashPassword(Txb_nuevo_usuario_contraseña.Text).ToString(), Cbx_nuevo_usuario_tipo.SelectedItem.ToString(), DateTime.Now.ToString()));
-            Guardar_cambios_usuario();
-            CargarDatosUsuarios();
+            try
+            {
+                MessageBox.Show(Txb_nuevo_usuario_nombre.Text);
+                if (Txb_nuevo_usuario_nombre.Text.Trim() != "" && Cbx_nuevo_usuario_tipo.SelectedIndex != -1 && Txb_nuevo_usuario_contraseña.Text.Trim() != "" && Txb_nuevo_usuario_contraseña.Text.Trim().Length > 8)
+                {
+                    usuarios.Add(new Usuario(Txb_nuevo_usuario_nombre.Text, Argon2Hasher.HashPassword(Txb_nuevo_usuario_contraseña.Text).ToString(), Cbx_nuevo_usuario_tipo.SelectedItem.ToString(), DateTime.Now.ToString()));
+                    if (Guardar_cambios_usuario())
+                    {
+                        CargarDatosUsuarios();
+                        MessageBox.Show("Cambios guardados exitosamente", "Exito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        Pnl_edicion_usuario.Visible = false;
+                        Pnl_agregar_usuario.Visible = false;
+                        Guardar_cambios_usuario();
+                        CargarDatosUsuarios();
+                        Txb_nuevo_usuario_contraseña.Text = string.Empty;
+                        Txb_nuevo_usuario_nombre.Text = string.Empty;
+                        Cbx_nuevo_usuario_tipo.SelectedIndex = -1;
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Ocurrio un error");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al guardar cambios: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            
         }
 
         private void Btn_filtrar_Click_1(object sender, EventArgs e)
@@ -644,6 +674,7 @@ namespace SAGA_EV3
             var (profile_name,profile_age,profile_cargo,profile_fecha) = Obtener_datos_perfil();
             
             agregar = false;
+            perfil_editado = profile_name;
             Lbl_panel_empleados.Text = "Panel de edicion";
             Pnl_edicion_empleado.Visible = true;
             Txb_nombre_empleado.Text = profile_name ;
@@ -725,6 +756,34 @@ namespace SAGA_EV3
             Cbx_tipo_empleado.SelectedIndex = -1;
             Dtp_ingreso_empleado.Value = DateTime.Now;
         }
+        private void Guardar_cambios_empleado()
+        {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < dt_empleados.Rows.Count; i++)
+            {
+                try
+                {
+                    var nombre_obj = dt_empleados.Rows[i]["Nombre"];
+                    if (nombre_obj == null || nombre_obj == DBNull.Value) continue;
+                    string nombre = nombre_obj.ToString();
+                    //Transferir solo los que no coinciden con el seleccionado
+                    if (!string.Equals(nombre, perfil_editado, StringComparison.Ordinal))
+                    {
+                        sb.AppendFormat("{0};{1};{2};{3}\n", dt_empleados.Rows[i]["Nombre"], dt_empleados.Rows[i]["Cargo"], dt_empleados.Rows[i]["Edad"], dt_empleados.Rows[i]["Fecha"]);
+                    }
+                    else
+                    {
+                        sb.AppendFormat("{0};{1};{2};{3}\n", Txb_nombre_empleado.Text, Cbx_tipo_empleado.SelectedItem.ToString(), Txb_edad_empleado.Text, Dtp_ingreso_empleado.Value.ToShortDateString());
+                    }
+                }
+                catch(Exception e)
+                {
+                    MessageBox.Show($"Ocurrio un error: {e}");
+                }
+            }
+            File.WriteAllText("Empleados.txt", sb.ToString());
+
+        }
 
         private void Btn_guardar_cambios_empleados_Click(object sender, EventArgs e)
         {
@@ -735,10 +794,195 @@ namespace SAGA_EV3
                     MessageBox.Show("El boton ejecuto el algoritmo para agregar empleado nuevo");
                     break;
                 case false:
+                    Guardar_cambios_empleado();
                     MessageBox.Show("El boton ejecuto el algoritmo para editar empleado");
                     break;
             }
             Limpiar_datos_empleado();
+            CargarDatosEmpleados();
+        }
+
+        private void Btn_filtar_empleados_Click(object sender, EventArgs e)
+        {
+            if (Txb_nombre_empleado_filtro.Text.Trim() == "" && Cbx_tipo_empleado_filtro.SelectedIndex != -1)
+            {
+                try
+                {
+                    string filtro_tipo = Cbx_tipo_empleado_filtro.SelectedItem.ToString();
+                    DataView dv = dt_empleados.DefaultView;
+                    dv.RowFilter = $"[Cargo] LIKE '%{filtro_tipo}%'";
+                    Dgv_empleados.DataSource = dv.ToTable();
+                    return;
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error al aplicar filtro: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+            }
+            else if (Txb_nombre_empleado_filtro.Text.Trim() != "" && Cbx_tipo_empleado_filtro.SelectedIndex == - 1)
+            {
+                try
+                {
+                    string filtro_nombre = Txb_nombre_empleado_filtro.Text.Trim();
+                    DataView dv = dt_empleados.DefaultView;
+                    dv.RowFilter = $"[Nombre] LIKE '%{filtro_nombre}%'";
+                    Dgv_empleados.DataSource = dv.ToTable();
+                    return;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error al aplicar filtro: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+            }
+            else if (Txb_nombre_empleado_filtro.Text.Trim() != "" && Cbx_tipo_empleado_filtro.SelectedIndex != -1)
+            {
+                try
+                {
+                    string filtro_tipo = Cbx_tipo_empleado_filtro.SelectedItem.ToString();
+                    string filtro_nombre = Txb_nombre_empleado_filtro.Text.Trim();
+                    DataView dv = dt_empleados.DefaultView;
+                    dv.RowFilter = $"[Nombre] LIKE '%{filtro_nombre}%' AND [Cargo] LIKE '%{filtro_tipo}%'";
+                    Dgv_empleados.DataSource = dv.ToTable();
+                    return;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error al aplicar filtro: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+
+                }
+            }
+            else
+            {
+                MessageBox.Show("Primero debe establecer los criterios de busqueda", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+
+            }
+
+        }
+
+        private void Btn_eliminar_empleado_Click(object sender, EventArgs e)
+        {
+            string seleccionado = Dgv_empleados.SelectedRows[0].Cells["Nombre"].Value.ToString();
+            StringBuilder sb = new StringBuilder();
+            foreach (DataRow perfil in dt_empleados.Rows)
+            {
+                if (perfil[0].ToString() != seleccionado)
+                {
+                    sb.AppendFormat("{0};{1};{2};{3}\n", perfil["Nombre"], perfil["Cargo"], perfil["Edad"], perfil["Fecha"]);
+                }
+            }
+            File.WriteAllText("Empleados.txt", sb.ToString());
+            CargarDatosEmpleados();
+        }
+
+        private void Tsm_gestion_empleados_Click(object sender, EventArgs e)
+        {
+            Pnl_gestion_empleados.Visible = true;
+            Pnl_gestionUsuarios.Visible = false;
+            Pnl_agregar_existente.Visible = false;
+            Pnl_agregar_nuevo.Visible = false;
+            PNL_eliminacion_cantidad.Visible = false;
+            PNL_eliminacion_producto.Visible = false;
+            {
+                Tsm_Eliminar.Checked = false;
+                TSM_eliminar_existencias.Checked = false;
+                TSM_eliminar_producto.Checked = false;
+                Tsm_agregar.Checked = false;
+                Tsm_agregar_existente.Checked = false;
+                Tsm_nuevo_prod.Checked = false;
+            }
+        }
+
+        private void Txb_nombre_empleado_TextChanged(object sender, EventArgs e)
+        {
+            if (Txb_nombre_empleado.Text.Trim() == "" || Txb_edad_empleado.Text.Trim() == ""||Cbx_tipo_empleado.SelectedIndex == -1 )
+            {
+                Btn_guardar_cambios_empleados.Enabled = false;
+            }
+            else
+            {
+                Btn_guardar_cambios_empleados.Enabled = true;
+
+            }
+        }
+
+        private void Txb_edad_empleado_TextChanged(object sender, EventArgs e)
+        {
+            if (Txb_nombre_empleado.Text.Trim() == "" || Txb_edad_empleado.Text.Trim() == "" || Cbx_tipo_empleado.SelectedIndex == -1)
+            {
+                Btn_guardar_cambios_empleados.Enabled = false;
+            }
+            else
+            {
+                Btn_guardar_cambios_empleados.Enabled = true;
+
+            }
+
+        }
+
+        private void Cbx_tipo_empleado_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (Txb_nombre_empleado.Text.Trim() == "" || Txb_edad_empleado.Text.Trim() == "" || Cbx_tipo_empleado.SelectedIndex == -1)
+            {
+                Btn_guardar_cambios_empleados.Enabled = false;
+            }
+            else
+            {
+                Btn_guardar_cambios_empleados.Enabled = true;
+
+            }
+        }
+
+        private void Txb_nuevo_usuario_contraseña_TextChanged(object sender, EventArgs e)
+        {
+            if (Txb_nuevo_usuario_contraseña.Text.Trim() == "" || Cbx_nuevo_usuario_tipo.SelectedIndex == -1 || Txb_nuevo_usuario_nombre.Text.Trim() == "")
+            {
+                Btn_nuevo_usuario_guardar.Enabled = false;
+            }
+            else
+            {
+                Btn_nuevo_usuario_guardar.Enabled = true;
+            }
+        }
+
+        private void Txb_nuevo_usuario_nombre_TextChanged(object sender, EventArgs e)
+        {
+            if (Txb_nuevo_usuario_contraseña.Text.Trim() == "" || Cbx_nuevo_usuario_tipo.SelectedIndex == -1 || Txb_nuevo_usuario_nombre.Text.Trim() == "")
+            {
+                Btn_nuevo_usuario_guardar.Enabled = false;
+            }
+            else
+            {
+                Btn_nuevo_usuario_guardar.Enabled = true;
+            }
+
+        }
+
+        private void Cbx_nuevo_usuario_tipo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (Txb_nuevo_usuario_contraseña.Text.Trim() == "" || Cbx_nuevo_usuario_tipo.SelectedIndex == -1 || Txb_nuevo_usuario_nombre.Text.Trim() == "")
+            {
+                Btn_nuevo_usuario_guardar.Enabled = false;
+            }
+            else
+            {
+                Btn_nuevo_usuario_guardar.Enabled = true;
+            }
+        }
+
+        private void Txb_nuevo_usuario_contraseña_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == ' ')
+                e.Handled = true;
+        }
+
+        private void Tbx_modificar_contraseña_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

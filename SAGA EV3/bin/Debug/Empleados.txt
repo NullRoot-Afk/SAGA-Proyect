@@ -1,3 +1,1 @@
-Luis Escare Latud;Gerente;23;20-10-23
-Jose Juan Jalente;Cuidador;40;20-01-25
-luis;Cuidador;12;20-11-2025
+luis4;Otros;23;05-11-2025
