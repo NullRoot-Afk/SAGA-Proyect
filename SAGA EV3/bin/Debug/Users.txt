@@ -1,2 +1,4 @@
-NullRoot;Qqm5rgFSa+K7y8Q71pNlMw==:E1ozuw/LNQ8opJun0PDL6s00O8wdseBYWc2XC6/9WpE=;Administrador;18-11-2025 17:42:16
-ffsfsfs;xXyoSE5/H9Z3+ShBmC1LKw==:69dVT9x50P6uE3qOViAEmrqqeE6VnCwAH3hQ0B6ZWsc=;Administrador;21-11-2025 0:35:51
+NullRoot;j8ovUmRdeaWEFJCHfrxEJw==:/mc+mWGwB3m7WOoFFwRqv+sMBK3mWaQWlPEWapqpnr8=;Administrador;18-11-2025 17:42:16
+usuario3;k+o/crAgV6lrUG/K9p/8Lw==:3oWRLuIjWyHH7EGDN4TnPT4J+8T3sOd3Ix++3UrSI/I=;Empleado;24-11-2025 23:59:35
+afasfsaasf;CZMPU0vfuf9b/yAz0pTpZw==:zOvrXyxUW+t5bIbDGTMFbwq3UbFmwYr7pN8G0K9rc+g=;Empleado;25-11-2025 0:07:19
+ddadasdasdas;FBXAQTrobjBzaNKGy3HD1A==:JNMlTpY8TMWdMZ+SLWArapGp+HRdxAIerE/ASoeBtZ8=;Administrador;25-11-2025 0:15:29

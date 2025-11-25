@@ -16,7 +16,7 @@ namespace SAGA_EV3
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form2("hola","hola"));
+            Application.Run(new Form1());
         }
     }
 }

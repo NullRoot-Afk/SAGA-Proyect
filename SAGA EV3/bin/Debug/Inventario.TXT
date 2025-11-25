@@ -1,2 +1,1 @@
-asdas;0;Alimentos
-adsd;24;Alimentos
+Harina;18;Alimentos

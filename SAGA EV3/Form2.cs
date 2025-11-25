@@ -207,6 +207,7 @@ namespace SAGA_EV3
             if (!int.TryParse(Txb_cantidad_prod_nuevo.Text, out int cantidad) || cantidad < 0)
             {
                 MessageBox.Show("Por favor ingrese una cantidad valida", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Txb_cantidad_prod_nuevo.Text = string.Empty;
                 return;
             }
             else if (Existe_producto(Txb_producto_nuevo.Text))
@@ -254,6 +255,7 @@ namespace SAGA_EV3
                 if (!int.TryParse(numero.Text, out int cantidad) || int.Parse(numero.Text) <= 0 || int.Parse(numero.Text) > cantidad_actual)
                 {
                     MessageBox.Show("La cantidad agregada debe ser mayor que cero y menor que la cantidad total en inventario", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    numero.Text = string.Empty;
                     return false;
                 }
                 return true;
@@ -542,14 +544,12 @@ namespace SAGA_EV3
         {
             try
             {
-                MessageBox.Show(Txb_nuevo_usuario_nombre.Text);
                 if (Txb_nuevo_usuario_nombre.Text.Trim() != "" && Cbx_nuevo_usuario_tipo.SelectedIndex != -1 && Txb_nuevo_usuario_contraseña.Text.Trim() != "" && Txb_nuevo_usuario_contraseña.Text.Trim().Length > 8)
                 {
                     usuarios.Add(new Usuario(Txb_nuevo_usuario_nombre.Text, Argon2Hasher.HashPassword(Txb_nuevo_usuario_contraseña.Text).ToString(), Cbx_nuevo_usuario_tipo.SelectedItem.ToString(), DateTime.Now.ToString()));
                     if (Guardar_cambios_usuario())
                     {
                         CargarDatosUsuarios();
-                        MessageBox.Show("Cambios guardados exitosamente", "Exito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         Pnl_edicion_usuario.Visible = false;
                         Pnl_agregar_usuario.Visible = false;
                         Guardar_cambios_usuario();
@@ -557,11 +557,13 @@ namespace SAGA_EV3
                         Txb_nuevo_usuario_contraseña.Text = string.Empty;
                         Txb_nuevo_usuario_nombre.Text = string.Empty;
                         Cbx_nuevo_usuario_tipo.SelectedIndex = -1;
+                        MessageBox.Show("Usuario agregado exitosamente", "Exito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
                     }
                 }
                 else
                 {
-                    MessageBox.Show("Ocurrio un error");
+                    MessageBox.Show("Ocurrio un error, ingrese una contraseña con mas de 8 digitos");
                 }
             }
             catch (Exception ex)
@@ -899,34 +901,54 @@ namespace SAGA_EV3
 
         private void Txb_nombre_empleado_TextChanged(object sender, EventArgs e)
         {
-            if (Txb_nombre_empleado.Text.Trim() == "" || Txb_edad_empleado.Text.Trim() == ""||Cbx_tipo_empleado.SelectedIndex == -1 )
+            try
             {
-                Btn_guardar_cambios_empleados.Enabled = false;
-            }
-            else
-            {
-                Btn_guardar_cambios_empleados.Enabled = true;
+                if (Txb_nombre_empleado.Text.Trim() == "" || Txb_edad_empleado.Text.Trim() == ""||Cbx_tipo_empleado.SelectedIndex == -1 || int.Parse(Txb_edad_empleado.Text) > 80 || int.Parse(Txb_edad_empleado.Text) < 18) 
+                {
+                        Btn_guardar_cambios_empleados.Enabled = false;
+                }
+                else
+                {
+                    Btn_guardar_cambios_empleados.Enabled = true;
 
+                }
+            }
+            catch (FormatException)
+            {
+                MessageBox.Show("Datos invalidos", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Txb_nombre_empleado.Text = string.Empty;
+                Txb_edad_empleado.Text = string.Empty;
             }
         }
 
         private void Txb_edad_empleado_TextChanged(object sender, EventArgs e)
         {
-            if (Txb_nombre_empleado.Text.Trim() == "" || Txb_edad_empleado.Text.Trim() == "" || Cbx_tipo_empleado.SelectedIndex == -1)
+            try
             {
-                Btn_guardar_cambios_empleados.Enabled = false;
-            }
-            else
-            {
-                Btn_guardar_cambios_empleados.Enabled = true;
+                if (Txb_nombre_empleado.Text.Trim() == "" || Txb_edad_empleado.Text.Trim() == "" || Cbx_tipo_empleado.SelectedIndex == -1 || int.Parse(Txb_edad_empleado.Text) > 80 || int.Parse(Txb_edad_empleado.Text) < 18)
+                {
+                    Btn_guardar_cambios_empleados.Enabled = false;
+                }
+                else
+                {
+                    Btn_guardar_cambios_empleados.Enabled = true;
+                }
 
             }
+            catch (FormatException)
+            {
+                MessageBox.Show("Ingrese datos validos", "Error");
+                Txb_nombre_empleado.Text = string.Empty;
+                Txb_edad_empleado.Text = string.Empty;
+            }
+
+            
 
         }
 
         private void Cbx_tipo_empleado_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (Txb_nombre_empleado.Text.Trim() == "" || Txb_edad_empleado.Text.Trim() == "" || Cbx_tipo_empleado.SelectedIndex == -1)
+            if (Txb_nombre_empleado.Text.Trim() == "" || Txb_edad_empleado.Text.Trim() == "" || Cbx_tipo_empleado.SelectedIndex == -1 || int.Parse(Txb_edad_empleado.Text) > 80 || int.Parse(Txb_edad_empleado.Text) < 18)
             {
                 Btn_guardar_cambios_empleados.Enabled = false;
             }
@@ -981,6 +1003,11 @@ namespace SAGA_EV3
         }
 
         private void Tbx_modificar_contraseña_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Txb_cantidad_prod_nuevo_TextChanged(object sender, EventArgs e)
         {
 
         }
